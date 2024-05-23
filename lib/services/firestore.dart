@@ -7,19 +7,29 @@ class FireStoreService {
       FirebaseFirestore.instance.collection('debtorsList');
 
   //CREATE: add new debtor
-  Future<void> addDebtor(String name, String amount) {
-    return debtorList
-        .add({'name': name, 'amount': amount, 'date': DateTime.now()});
+  Future<void> addDebtor(String name, String amount, bool paid) {
+    return debtorList.add(
+        {'name': name, 'amount': amount, 'paid': paid, 'date': DateTime.now()});
   }
 
   //READ: get debtors
-  Stream<QuerySnapshot> getDebtorsStream(){
-    final debtorStream = debtorList.orderBy('date', descending: true).snapshots();
+  Stream<QuerySnapshot> getDebtorsStream() {
+    final debtorStream =
+        debtorList.orderBy('date', descending: true).snapshots();
 
     return debtorStream;
   }
 
   //CREATE: update
+  Future<void> updateDebt(
+      String docId, String newName, String newAmount, bool paid) {
+    return debtorList.doc(docId).update({
+      'name': newName,
+      'amount': newAmount,
+      'paid': paid,
+      'date': DateTime.now(),
+    });
+  }
 
   //DELETE delete debtors
 }

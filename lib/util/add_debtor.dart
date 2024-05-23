@@ -9,12 +9,14 @@ class AddDebtorDialog extends StatelessWidget {
   VoidCallback onSave;
   VoidCallback onCancel;
 
+
  AddDebtorDialog(
       {super.key,
       required this.controller,
       required this.controller2,
       required this.onSave,
-      required this.onCancel});
+      required this.onCancel,
+      });
 
   @override
   Widget build(BuildContext context) {

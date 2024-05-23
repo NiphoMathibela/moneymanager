@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:moneymanager/services/firestore.dart';
 import 'package:moneymanager/util/add_debtor.dart';
@@ -25,12 +26,7 @@ class _HomePageState extends State<HomePage> {
     ["Eric Swanson", "2500", false],
   ];
 
-  //Ceckbox tapped
-  void checkBoxChanged(bool? value, int index) {
-    setState(() {
-      debtors[index][2] = !debtors[index][2];
-    });
-  }
+ 
 
   //Save debtor
   void saveNewDebtor() {
@@ -52,7 +48,8 @@ class _HomePageState extends State<HomePage> {
             controller: _controller,
             controller2: _controller2,
             onSave: () {
-              fireStoreService.addDebtor(_controller.text, _controller2.text);
+              bool paid = false;
+              fireStoreService.addDebtor(_controller.text, _controller2.text, paid);
               _controller.clear();
               _controller2.clear();
               Navigator.pop(context);
@@ -68,7 +65,13 @@ class _HomePageState extends State<HomePage> {
       debtors.removeAt(index);
     });
   }
-
+  
+   //Ceckbox tapped
+  void checkBoxChanged(bool? value, int index) {
+    setState(() {
+      debtors[index][2] = !debtors[index][2];
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -78,17 +81,39 @@ class _HomePageState extends State<HomePage> {
         title: const Text("Welcome!"),
         elevation: 1,
       ),
-      body: ListView.builder(
-          itemCount: debtors.length,
-          itemBuilder: (context, index) {
-            return DebtorTile(
-              name: debtors[index][0],
-              amount: debtors[index][1],
-              paid: debtors[index][2],
-              onChanged: (value) => checkBoxChanged(value, index),
-              deleteFunction: (context) => deleteDebtor(index),
-            );
-          }),
+      body: StreamBuilder<QuerySnapshot>(
+        stream: fireStoreService.getDebtorsStream(),
+        builder: (context, snapshot) {
+          //if we have data get all the docs
+          if (snapshot.hasData) {
+            List debtorList = snapshot.data!.docs;
+
+            return ListView.builder(
+                itemCount: debtorList.length,
+                itemBuilder: (context, index) {
+                  //get each doc
+                  DocumentSnapshot document = debtorList[index];
+                  String docId = document.id;
+
+                  //get data from each doc
+                  Map<String, dynamic> data = document.data() as Map<String, dynamic>;
+
+                  String nameText = data['name'];
+                  String amountText = data['amount'];
+                  
+                  return DebtorTile(
+                    name: nameText,
+                    amount: amountText,
+                    paid: debtors[index][2],
+                    onChanged: (value) => checkBoxChanged(value, index),
+                    deleteFunction: (context) => deleteDebtor(index),
+                  );
+                });
+          } else{
+            return const Text("No data available yet...");
+          }
+        },
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: createNewDebtor,
         backgroundColor: const Color.fromRGBO(235, 178, 255, 1),
@@ -116,7 +141,7 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
         currentIndex: 0,
-        selectedItemColor: Color.fromRGBO(167, 254, 217, 1),
+        selectedItemColor: const Color.fromRGBO(167, 254, 217, 1),
         unselectedItemColor: Colors.grey,
         onTap: (int index) => {
           // ignore: avoid_print
