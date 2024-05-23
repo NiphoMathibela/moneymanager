@@ -26,8 +26,6 @@ class _HomePageState extends State<HomePage> {
     ["Eric Swanson", "2500", false],
   ];
 
- 
-
   //Save debtor
   void saveNewDebtor() {
     setState(() {
@@ -40,7 +38,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   //Create new debtor
-  void createNewDebtor() {
+  void createNewDebtor({String? docId}) {
     showDialog(
         context: context,
         builder: (context) {
@@ -49,7 +47,13 @@ class _HomePageState extends State<HomePage> {
             controller2: _controller2,
             onSave: () {
               bool paid = false;
-              fireStoreService.addDebtor(_controller.text, _controller2.text, paid);
+              if (docId == null) {
+                fireStoreService.addDebtor(
+                    _controller.text, _controller2.text, paid);
+              } else {
+                fireStoreService.updateDebt(
+                    docId, _controller.text, _controller2.text, paid);
+              }
               _controller.clear();
               _controller2.clear();
               Navigator.pop(context);
@@ -65,13 +69,18 @@ class _HomePageState extends State<HomePage> {
       debtors.removeAt(index);
     });
   }
-  
-   //Ceckbox tapped
+
+  //Ceckbox tapped
   void checkBoxChanged(bool? value, int index) {
     setState(() {
       debtors[index][2] = !debtors[index][2];
     });
   }
+
+  //Editing function
+  void editDetails(
+      String docId, String newName, String newAmount, bool? paid) {}
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -96,26 +105,28 @@ class _HomePageState extends State<HomePage> {
                   String docId = document.id;
 
                   //get data from each doc
-                  Map<String, dynamic> data = document.data() as Map<String, dynamic>;
+                  Map<String, dynamic> data =
+                      document.data() as Map<String, dynamic>;
 
                   String nameText = data['name'];
                   String amountText = data['amount'];
-                  
+
                   return DebtorTile(
                     name: nameText,
                     amount: amountText,
                     paid: debtors[index][2],
                     onChanged: (value) => checkBoxChanged(value, index),
                     deleteFunction: (context) => deleteDebtor(index),
+                    editFunction: (context) => createNewDebtor(docId: docId),
                   );
                 });
-          } else{
+          } else {
             return const Text("No data available yet...");
           }
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: createNewDebtor,
+        onPressed: () => createNewDebtor(),
         backgroundColor: const Color.fromRGBO(235, 178, 255, 1),
         elevation: 8,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),

@@ -14,6 +14,7 @@ class DebtorTile extends StatelessWidget {
   final bool paid;
   Function(bool?)? onChanged;
   Function(BuildContext)? deleteFunction;
+  Function(BuildContext)? editFunction;
 
   DebtorTile({
     super.key,
@@ -22,6 +23,7 @@ class DebtorTile extends StatelessWidget {
     required this.paid,
     required this.onChanged,
     required this.deleteFunction,
+    required this.editFunction,
   });
 
   @override
@@ -36,6 +38,12 @@ class DebtorTile extends StatelessWidget {
               onPressed: deleteFunction,
               icon: Icons.delete,
               backgroundColor: Colors.red,
+              borderRadius: BorderRadius.all(Radius.circular(10)),
+            ),
+            SlidableAction(
+              onPressed: editFunction,
+              icon: Icons.edit,
+              backgroundColor: Color.fromRGBO(167, 254, 217, 1),
               borderRadius: BorderRadius.all(Radius.circular(10)),
             )
           ],
