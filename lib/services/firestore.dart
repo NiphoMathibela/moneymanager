@@ -32,4 +32,7 @@ class FireStoreService {
   }
 
   //DELETE delete debtors
+  Future<void> deleteDebt(String docId) {
+    return debtorList.doc(docId).delete();
+  }
 }

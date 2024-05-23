@@ -116,7 +116,7 @@ class _HomePageState extends State<HomePage> {
                     amount: amountText,
                     paid: debtors[index][2],
                     onChanged: (value) => checkBoxChanged(value, index),
-                    deleteFunction: (context) => deleteDebtor(index),
+                    deleteFunction: (context) => fireStoreService.deleteDebt(docId),
                     editFunction: (context) => createNewDebtor(docId: docId),
                   );
                 });
