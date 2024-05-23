@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "346983879482",
+    "project_id": "loanmanager-4eb16",
+    "storage_bucket": "loanmanager-4eb16.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:346983879482:android:d0001ab8997fa464bf7603",
+        "android_client_info": {
+          "package_name": "com.example.moneymanager"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyALnWsXM53wInWiy9VlJ8hXhYkqoFHabOE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
