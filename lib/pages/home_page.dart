@@ -13,7 +13,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   //Access firestore
   final FireStoreService fireStoreService = FireStoreService();
-  
+
   //Text controller
   final _controller = TextEditingController();
   final _controller2 = TextEditingController();
@@ -51,7 +51,12 @@ class _HomePageState extends State<HomePage> {
           return AddDebtorDialog(
             controller: _controller,
             controller2: _controller2,
-            onSave: saveNewDebtor,
+            onSave: () {
+              fireStoreService.addDebtor(_controller.text, _controller2.text);
+              _controller.clear();
+              _controller2.clear();
+              Navigator.pop(context);
+            },
             onCancel: () => Navigator.of(context).pop(),
           );
         });

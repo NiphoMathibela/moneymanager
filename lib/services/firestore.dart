@@ -13,6 +13,11 @@ class FireStoreService {
   }
 
   //READ: get debtors
+  Stream<QuerySnapshot> getDebtorsStream(){
+    final debtorStream = debtorList.orderBy('date', descending: true).snapshots();
+
+    return debtorStream;
+  }
 
   //CREATE: update
 
