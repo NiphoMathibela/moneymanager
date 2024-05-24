@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:moneymanager/pages/history_page.dart';
 import 'package:moneymanager/services/firestore.dart';
 import 'package:moneymanager/util/add_debtor.dart';
 import 'package:moneymanager/util/debtors_tile.dart';
@@ -18,6 +19,25 @@ class _HomePageState extends State<HomePage> {
   //Text controller
   final _controller = TextEditingController();
   final _controller2 = TextEditingController();
+
+  //Navigation functions
+  int _currentIndex = 0;
+
+  final List<Widget> _pages = [
+    HomePage(),
+    HistoryPage(),
+  ];
+
+  void _onTap(int index) {
+    setState(() {
+      _currentIndex = index;
+    });
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => _pages[index]),
+    );
+  }
 
   //List of debtors
   List debtors = [
@@ -71,15 +91,13 @@ class _HomePageState extends State<HomePage> {
   }
 
   //Ceckbox tapped
-  void checkBoxChanged(bool? value, int index) {
-    setState(() {
-      debtors[index][2] = !debtors[index][2];
-    });
+  void checkBoxChanged({String? docId, bool? value}) {
+    if (value != null) {
+      setState(() {
+        fireStoreService.updateSingleField(docId!, value);
+      });
+    }
   }
-
-  //Editing function
-  void editDetails(
-      String docId, String newName, String newAmount, bool? paid) {}
 
   @override
   Widget build(BuildContext context) {
@@ -110,13 +128,16 @@ class _HomePageState extends State<HomePage> {
 
                   String nameText = data['name'];
                   String amountText = data['amount'];
+                  bool? paidValue = data['paid'];
 
                   return DebtorTile(
                     name: nameText,
                     amount: amountText,
                     paid: debtors[index][2],
-                    onChanged: (value) => checkBoxChanged(value, index),
-                    deleteFunction: (context) => fireStoreService.deleteDebt(docId),
+                    checkBoxChanged: (value) =>
+                        checkBoxChanged(docId: docId, value: paidValue),
+                    deleteFunction: (context) =>
+                        fireStoreService.deleteDebt(docId),
                     editFunction: (context) => createNewDebtor(docId: docId),
                   );
                 });
@@ -151,13 +172,10 @@ class _HomePageState extends State<HomePage> {
             label: 'Account',
           ),
         ],
-        currentIndex: 0,
+        currentIndex: _currentIndex,
         selectedItemColor: const Color.fromRGBO(167, 254, 217, 1),
         unselectedItemColor: Colors.grey,
-        onTap: (int index) => {
-          // ignore: avoid_print
-          print("selected index: $index")
-        },
+        onTap: _onTap
       ),
     );
   }

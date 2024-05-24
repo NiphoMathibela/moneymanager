@@ -12,7 +12,7 @@ class DebtorTile extends StatelessWidget {
   final String name;
   final String amount;
   final bool paid;
-  Function(bool?)? onChanged;
+  Function(bool?)? checkBoxChanged;
   Function(BuildContext)? deleteFunction;
   Function(BuildContext)? editFunction;
 
@@ -21,7 +21,7 @@ class DebtorTile extends StatelessWidget {
     required this.name,
     required this.amount,
     required this.paid,
-    required this.onChanged,
+    required this.checkBoxChanged,
     required this.deleteFunction,
     required this.editFunction,
   });
@@ -56,7 +56,7 @@ class DebtorTile extends StatelessWidget {
               borderRadius: BorderRadius.circular(10)),
 
           child: ListTile(
-            leading: Checkbox(value: paid, onChanged: onChanged),
+            leading: Checkbox(value: paid, onChanged: checkBoxChanged),
             title: Text(name),
             trailing: Row(
               mainAxisSize: MainAxisSize.min,

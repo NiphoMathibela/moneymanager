@@ -31,6 +31,19 @@ class FireStoreService {
     });
   }
 
+  //CREATE: update single filed (paid)
+  Future<void> updateSingleField(String docId, bool paid) async {
+
+  final DocumentReference documentReference = debtorList.doc(docId);
+
+  await documentReference.update({
+
+    'paid': paid,
+
+  });
+
+}
+
   //DELETE delete debtors
   Future<void> deleteDebt(String docId) {
     return debtorList.doc(docId).delete();
