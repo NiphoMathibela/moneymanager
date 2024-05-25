@@ -31,7 +31,7 @@ class _HistoryPageState extends State<HistoryPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text("History", style: TextStyle(fontFamily: "ClashGrotesk"),),
+        title: const Text("History", style: TextStyle(fontFamily: "ClashGrotesk", fontWeight: FontWeight.w700),),
         elevation: 1,
       ),
       body: Container(
@@ -62,8 +62,8 @@ class _HistoryPageState extends State<HistoryPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Icon(Icons.work),
-                        Text("Recieved", style: TextStyle(fontFamily: "ClashGrotesk", fontSize: 15, color: Color.fromRGBO(102, 102, 102, 1)),),
-                        Text("R 15,000.00", style: TextStyle(fontFamily: "ClashGrotesk", fontSize: 17,),)
+                        Text("Recieved", style: TextStyle(fontFamily: "ClashGrotesk", fontSize: 15, color: Color.fromRGBO(102, 102, 102, 1), fontWeight: FontWeight.w600),),
+                        Text("R 15,000.00", style: TextStyle(fontFamily: "ClashGrotesk", fontSize: 17, fontWeight: FontWeight.w600),)
                       ],
                     ),
                   ),
@@ -90,8 +90,8 @@ class _HistoryPageState extends State<HistoryPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Icon(Icons.payment_rounded),
-                        Text("Loaned",style: TextStyle(fontFamily: "ClashGrotesk", fontSize: 15, color: Color.fromRGBO(102, 102, 102, 1)),),
-                        Text("R 15,000.00", style: TextStyle(fontFamily: "ClashGrotesk", fontSize: 17, ),)
+                        Text("Loaned",style: TextStyle(fontFamily: "ClashGrotesk", fontSize: 15, color: Color.fromRGBO(102, 102, 102, 1), fontWeight: FontWeight.w600),),
+                        Text("R 15,000.00", style: TextStyle(fontFamily: "ClashGrotesk", fontSize: 17, fontWeight: FontWeight.w600),)
                       ],
                     ),
                   ),

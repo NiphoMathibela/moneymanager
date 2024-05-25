@@ -31,7 +31,7 @@ class _AccountPageState extends State<AccountPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text("Account", style: TextStyle(fontFamily: "ClashGrotesk"),),
+        title: const Text("Account", style: TextStyle(fontFamily: "ClashGrotesk", fontWeight: FontWeight.w600),),
         backgroundColor: Colors.white60,
         elevation: 1,
       ),
@@ -48,7 +48,7 @@ class _AccountPageState extends State<AccountPage> {
               //Email List tile
               child: const ListTile(
                 leading: Icon(Icons.email),
-                title: Text("Change email"),
+                title: Text("Change email", style: TextStyle(fontFamily: "ClashGrotesk", fontWeight: FontWeight.w400),),
               ),
             ),
           ),
@@ -63,7 +63,7 @@ class _AccountPageState extends State<AccountPage> {
               //Account List tile
               child: const ListTile(
                 leading: Icon(Icons.key),
-                title: Text("Change password"),
+                title: Text("Change password", style: TextStyle(fontFamily: "ClashGrotesk", fontWeight: FontWeight.w400),),
               ),
             ),
           ),

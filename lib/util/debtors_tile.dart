@@ -56,11 +56,11 @@ class DebtorTile extends StatelessWidget {
               borderRadius: BorderRadius.circular(10)),
 
           child: ListTile(
-            title: Text(name, style: TextStyle(fontFamily: 'ClashGrotesk', fontWeight: FontWeight.w200, fontSize: 16),),
+            title: Text(name, style: TextStyle(fontFamily: 'ClashGrotesk', fontWeight: FontWeight.w500, fontSize: 16),),
             subtitle: Row(
               children: const [
                 Icon(Icons.contact_phone_rounded, size: 22, color: Color.fromRGBO(102, 102, 102, 1),),
-                Text(" 079 456 1535",style: TextStyle(fontWeight: FontWeight.w500, fontSize: 14),)
+                Text(" 079 456 1535",style: TextStyle(fontFamily:'ClashGrotesk', fontWeight: FontWeight.w400, fontSize: 14),)
               ],
             ),
             trailing: Row(
@@ -74,7 +74,7 @@ class DebtorTile extends StatelessWidget {
                   width: 8,
                 ),
                 Icon(Icons.monetization_on),
-                Text(amount, style: TextStyle(fontFamily: "ClashGrotesk", fontSize: 12),)
+                Text(amount, style: TextStyle(fontFamily: "ClashGrotesk", fontSize: 12, fontWeight: FontWeight.w500),)
               ],
             ),
           ),

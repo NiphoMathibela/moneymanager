@@ -90,15 +90,17 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white60,
-        title: const Text("Welcome!", style: TextStyle(fontFamily: "ClashGrotesk"),),
+        title: const Text(
+          "Welcome!",
+          style: TextStyle(
+              fontFamily: "ClashGrotesk", fontWeight: FontWeight.w700),
+        ),
         elevation: 1,
       ),
       body: StreamBuilder<QuerySnapshot>(
