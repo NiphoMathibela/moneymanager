@@ -32,15 +32,9 @@ class FireStoreService {
   }
 
   //CREATE: update single filed (paid)
-  Future<void> updateSingleField(String docId, bool paid) async {
+Future<void> updateSingleField(String docId, bool paid) async {
 
-  final DocumentReference documentReference = debtorList.doc(docId);
-
-  await documentReference.update({
-
-    'paid': paid,
-
-  });
+    await debtorList.doc(docId).update({'paid': paid});
 
 }
 

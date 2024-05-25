@@ -31,7 +31,7 @@ class _HistoryPageState extends State<HistoryPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text("History"),
+        title: const Text("History", style: TextStyle(fontFamily: "ClashGrotesk"),),
         elevation: 1,
       ),
       body: Container(
@@ -62,8 +62,8 @@ class _HistoryPageState extends State<HistoryPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Icon(Icons.work),
-                        Text("Recieved"),
-                        Text("R 15,000.00")
+                        Text("Recieved", style: TextStyle(fontFamily: "ClashGrotesk", fontSize: 15, color: Color.fromRGBO(102, 102, 102, 1)),),
+                        Text("R 15,000.00", style: TextStyle(fontFamily: "ClashGrotesk", fontSize: 17,),)
                       ],
                     ),
                   ),
@@ -90,8 +90,8 @@ class _HistoryPageState extends State<HistoryPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Icon(Icons.payment_rounded),
-                        Text("Amount loaned"),
-                        Text("R 15,000.00")
+                        Text("Loaned",style: TextStyle(fontFamily: "ClashGrotesk", fontSize: 15, color: Color.fromRGBO(102, 102, 102, 1)),),
+                        Text("R 15,000.00", style: TextStyle(fontFamily: "ClashGrotesk", fontSize: 17, ),)
                       ],
                     ),
                   ),

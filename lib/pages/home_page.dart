@@ -25,11 +25,7 @@ class _HomePageState extends State<HomePage> {
   //Navigation functions
   int _currentIndex = 0;
 
-  final List<Widget> _pages = [
-    HomePage(),
-    HistoryPage(),
-    AccountPage()
-  ];
+  final List<Widget> _pages = [HomePage(), HistoryPage(), AccountPage()];
 
   void _onTap(int index) {
     setState(() {
@@ -72,8 +68,8 @@ class _HomePageState extends State<HomePage> {
             onSave: () {
               bool paid = false;
               if (docId == null) {
-                fireStoreService.addDebtor(
-                    _controller.text, _controller2.text, _numberController.text, paid);
+                fireStoreService.addDebtor(_controller.text, _controller2.text,
+                    _numberController.text, paid);
               } else {
                 fireStoreService.updateDebt(
                     docId, _controller.text, _controller2.text, paid);
@@ -94,14 +90,7 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  //Ceckbox tapped
-  void checkBoxChanged({String? docId, bool? value}) {
-    if (value != null) {
-      setState(() {
-        fireStoreService.updateSingleField(docId!, value);
-      });
-    }
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -109,7 +98,7 @@ class _HomePageState extends State<HomePage> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white60,
-        title: const Text("Welcome!"),
+        title: const Text("Welcome!", style: TextStyle(fontFamily: "ClashGrotesk"),),
         elevation: 1,
       ),
       body: StreamBuilder<QuerySnapshot>(
@@ -132,14 +121,13 @@ class _HomePageState extends State<HomePage> {
 
                   String nameText = data['name'];
                   String amountText = data['amount'];
-                  bool? paidValue = data['paid'];
+                  bool paidValue = data['paid'];
 
                   return DebtorTile(
                     name: nameText,
                     amount: amountText,
-                    paid: debtors[index][2],
-                    checkBoxChanged: (value) =>
-                        checkBoxChanged(docId: docId, value: paidValue),
+                    paid: paidValue,
+                    docId: docId,
                     deleteFunction: (context) =>
                         fireStoreService.deleteDebt(docId),
                     editFunction: (context) => createNewDebtor(docId: docId),
@@ -158,29 +146,28 @@ class _HomePageState extends State<HomePage> {
         child: const Icon(Icons.add),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home_rounded),
-            label: 'Home',
-          ),
-          // BottomNavigationBarItem(
-          //   icon: Icon(Icons.wallet),
-          //   label: 'Wallet',
-          // ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.pie_chart),
-            label: 'History',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Account',
-          ),
-        ],
-        currentIndex: _currentIndex,
-        selectedItemColor: const Color.fromRGBO(167, 254, 217, 1),
-        unselectedItemColor: Colors.grey,
-        onTap: _onTap
-      ),
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home_rounded),
+              label: 'Home',
+            ),
+            // BottomNavigationBarItem(
+            //   icon: Icon(Icons.wallet),
+            //   label: 'Wallet',
+            // ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.pie_chart),
+              label: 'History',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person),
+              label: 'Account',
+            ),
+          ],
+          currentIndex: _currentIndex,
+          selectedItemColor: const Color.fromRGBO(167, 254, 217, 1),
+          unselectedItemColor: Colors.grey,
+          onTap: _onTap),
     );
   }
 }

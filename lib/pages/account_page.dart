@@ -31,7 +31,7 @@ class _AccountPageState extends State<AccountPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text("Account"),
+        title: const Text("Account", style: TextStyle(fontFamily: "ClashGrotesk"),),
         backgroundColor: Colors.white60,
         elevation: 1,
       ),

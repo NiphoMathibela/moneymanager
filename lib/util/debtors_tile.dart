@@ -5,6 +5,7 @@ import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:moneymanager/util/toggle_paid.dart';
 
 // ignore: must_be_immutable
 class DebtorTile extends StatelessWidget {
@@ -12,19 +13,19 @@ class DebtorTile extends StatelessWidget {
   final String name;
   final String amount;
   final bool paid;
-  Function(bool?)? checkBoxChanged;
+  final String docId;
   Function(BuildContext)? deleteFunction;
   Function(BuildContext)? editFunction;
 
-  DebtorTile({
-    super.key,
-    required this.name,
-    required this.amount,
-    required this.paid,
-    required this.checkBoxChanged,
-    required this.deleteFunction,
-    required this.editFunction,
-  });
+  DebtorTile(
+      {super.key,
+      required this.name,
+      required this.amount,
+      required this.paid,
+      required this.deleteFunction,
+      required this.editFunction,
+      required this.docId,
+      });
 
   @override
   Widget build(BuildContext context) {
@@ -49,18 +50,32 @@ class DebtorTile extends StatelessWidget {
           ],
         ),
         child: Container(
-          // ignore: prefer_const_constructors
           padding: EdgeInsets.only(top: 4, bottom: 4),
           decoration: BoxDecoration(
               color: Color.fromRGBO(245, 245, 245, 1),
               borderRadius: BorderRadius.circular(10)),
 
           child: ListTile(
-            title: Text(name),
-            subtitle: Row(children: const [Icon(Icons.phone, size: 17), Text("079 456 1535")],),
+            title: Text(name, style: TextStyle(fontFamily: 'ClashGrotesk', fontWeight: FontWeight.w200, fontSize: 16),),
+            subtitle: Row(
+              children: const [
+                Icon(Icons.contact_phone_rounded, size: 22, color: Color.fromRGBO(102, 102, 102, 1),),
+                Text(" 079 456 1535",style: TextStyle(fontWeight: FontWeight.w500, fontSize: 14),)
+              ],
+            ),
             trailing: Row(
               mainAxisSize: MainAxisSize.min,
-              children: [Icon(Icons.monetization_on), Text(amount)],
+              children: [
+                TogglePaid(
+                  isPaid: paid,
+                  docId: docId,
+                ),
+                SizedBox(
+                  width: 8,
+                ),
+                Icon(Icons.monetization_on),
+                Text(amount, style: TextStyle(fontFamily: "ClashGrotesk", fontSize: 12),)
+              ],
             ),
           ),
         ),
