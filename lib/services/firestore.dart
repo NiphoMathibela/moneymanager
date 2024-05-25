@@ -7,9 +7,9 @@ class FireStoreService {
       FirebaseFirestore.instance.collection('debtorsList');
 
   //CREATE: add new debtor
-  Future<void> addDebtor(String name, String amount, bool paid) {
+  Future<void> addDebtor(String name, String amount, String contact, bool paid) {
     return debtorList.add(
-        {'name': name, 'amount': amount, 'paid': paid, 'date': DateTime.now()});
+        {'name': name, 'amount': amount, 'contact':contact, 'paid': paid, 'date': DateTime.now()});
   }
 
   //READ: get debtors

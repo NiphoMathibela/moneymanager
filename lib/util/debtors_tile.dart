@@ -56,8 +56,8 @@ class DebtorTile extends StatelessWidget {
               borderRadius: BorderRadius.circular(10)),
 
           child: ListTile(
-            leading: Checkbox(value: paid, onChanged: checkBoxChanged),
             title: Text(name),
+            subtitle: Row(children: const [Icon(Icons.phone, size: 17), Text("079 456 1535")],),
             trailing: Row(
               mainAxisSize: MainAxisSize.min,
               children: [Icon(Icons.monetization_on), Text(amount)],

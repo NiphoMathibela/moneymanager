@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:moneymanager/pages/account_page.dart';
 import 'package:moneymanager/pages/history_page.dart';
 import 'package:moneymanager/services/firestore.dart';
 import 'package:moneymanager/util/add_debtor.dart';
@@ -19,6 +20,7 @@ class _HomePageState extends State<HomePage> {
   //Text controller
   final _controller = TextEditingController();
   final _controller2 = TextEditingController();
+  final _numberController = TextEditingController();
 
   //Navigation functions
   int _currentIndex = 0;
@@ -26,6 +28,7 @@ class _HomePageState extends State<HomePage> {
   final List<Widget> _pages = [
     HomePage(),
     HistoryPage(),
+    AccountPage()
   ];
 
   void _onTap(int index) {
@@ -65,11 +68,12 @@ class _HomePageState extends State<HomePage> {
           return AddDebtorDialog(
             controller: _controller,
             controller2: _controller2,
+            numberController: _numberController,
             onSave: () {
               bool paid = false;
               if (docId == null) {
                 fireStoreService.addDebtor(
-                    _controller.text, _controller2.text, paid);
+                    _controller.text, _controller2.text, _numberController.text, paid);
               } else {
                 fireStoreService.updateDebt(
                     docId, _controller.text, _controller2.text, paid);
@@ -159,10 +163,10 @@ class _HomePageState extends State<HomePage> {
             icon: Icon(Icons.home_rounded),
             label: 'Home',
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.wallet),
-            label: 'Wallet',
-          ),
+          // BottomNavigationBarItem(
+          //   icon: Icon(Icons.wallet),
+          //   label: 'Wallet',
+          // ),
           BottomNavigationBarItem(
             icon: Icon(Icons.pie_chart),
             label: 'History',

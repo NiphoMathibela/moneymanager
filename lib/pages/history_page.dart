@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:moneymanager/pages/account_page.dart';
 import 'package:moneymanager/pages/home_page.dart';
 
 class HistoryPage extends StatefulWidget {
@@ -12,10 +13,7 @@ class _HistoryPageState extends State<HistoryPage> {
   //Navigation functions
   int _currentIndex = 1;
 
-  final List<Widget> _pages = [
-    HomePage(),
-    HistoryPage(),
-  ];
+  final List<Widget> _pages = [HomePage(), HistoryPage(), AccountPage()];
 
   void _onTap(int index) {
     setState(() {
@@ -38,57 +36,64 @@ class _HistoryPageState extends State<HistoryPage> {
       ),
       body: Container(
           child: Padding(
-        padding: const EdgeInsets.only(top: 12),
+        padding: const EdgeInsets.all(20),
         child: Row(
             mainAxisAlignment:
                 MainAxisAlignment.spaceEvenly, // space the containers evenly
 
             children: [
-              Container(
-                height: 140, // adjust the height as needed
+              Expanded(
+                child: Container(
+                  height: 140, // adjust the height as needed
 
-                width: 160, // adjust the width as needed
+                  // width: 160, // adjust the width as needed
 
-                // background color of the container
+                  // background color of the container
 
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  color: Color.fromRGBO(235, 178, 255, 1),
-                ),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Color.fromRGBO(235, 178, 255, 1),
+                  ),
 
-                //Container content
-                child: Padding(
-                  padding: const EdgeInsets.all(18),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Icon(Icons.work),
-                      Text("Recieved"),
-                      Text("R 15,000.00")
-                    ],
+                  //Container content
+                  child: const Padding(
+                    padding: EdgeInsets.all(18),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Icon(Icons.work),
+                        Text("Recieved"),
+                        Text("R 15,000.00")
+                      ],
+                    ),
                   ),
                 ),
               ),
-              Container(
-                height: 140, // adjust the height as needed
+              const SizedBox(
+                width: 10,
+              ),
+              Expanded(
+                child: Container(
+                  height: 140, // adjust the height as needed
 
-                width: 160, // adjust the width as needed
+                  // width: 160, // adjust the width as needed
 
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  color: Color.fromRGBO(167, 254, 217, 1),
-                ),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: const Color.fromRGBO(167, 254, 217, 1),
+                  ),
 
-                //Container content
-                child: Padding(
-                  padding: const EdgeInsets.all(18),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Icon(Icons.payment_rounded),
-                      Text("Amount loaned"),
-                      Text("R 15,000.00")
-                    ],
+                  //Container content
+                  child: const Padding(
+                    padding: EdgeInsets.all(18),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Icon(Icons.payment_rounded),
+                        Text("Amount loaned"),
+                        Text("R 15,000.00")
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -99,10 +104,6 @@ class _HistoryPageState extends State<HistoryPage> {
             BottomNavigationBarItem(
               icon: Icon(Icons.home_rounded),
               label: 'Home',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.wallet),
-              label: 'Wallet',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.pie_chart),
