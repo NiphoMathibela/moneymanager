@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class MyButton extends StatelessWidget {
   final String text;
   VoidCallback onPressed;
@@ -9,10 +10,10 @@ class MyButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialButton(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
       onPressed: onPressed,
       color: const Color.fromRGBO(29, 29, 33, 1),
-      child: Text(text, style: const TextStyle(color: Colors.white),),
+      child: Text(text, style: const TextStyle(color: Colors.white, fontFamily: 'ClashGrotesk'),),
     );
   }
 }
