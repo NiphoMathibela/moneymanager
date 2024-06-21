@@ -5,6 +5,7 @@ import 'package:moneymanager/pages/history_page.dart';
 import 'package:moneymanager/services/firestore.dart';
 import 'package:moneymanager/util/add_debtor.dart';
 import 'package:moneymanager/util/debtors_tile.dart';
+import 'package:moneymanager/util/view_debt.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -90,6 +91,15 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  //Debt Info
+  void viewDebt() {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return const ViewDebt();
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -133,6 +143,7 @@ class _HomePageState extends State<HomePage> {
                     deleteFunction: (context) =>
                         fireStoreService.deleteDebt(docId),
                     editFunction: (context) => createNewDebtor(docId: docId),
+                    viewDebtFunction:(context) => viewDebt(),
                   );
                 });
           } else {

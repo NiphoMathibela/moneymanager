@@ -5,6 +5,7 @@ import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:moneymanager/util/my_button.dart';
 import 'package:moneymanager/util/toggle_paid.dart';
 
 // ignore: must_be_immutable
@@ -16,6 +17,7 @@ class DebtorTile extends StatelessWidget {
   final String docId;
   Function(BuildContext)? deleteFunction;
   Function(BuildContext)? editFunction;
+  Function(BuildContext)? viewDebtFunction;
 
   DebtorTile(
       {super.key,
@@ -25,6 +27,7 @@ class DebtorTile extends StatelessWidget {
       required this.deleteFunction,
       required this.editFunction,
       required this.docId,
+      required this.viewDebtFunction
       });
 
   @override
@@ -56,6 +59,59 @@ class DebtorTile extends StatelessWidget {
               borderRadius: BorderRadius.circular(10)),
 
           child: ListTile(
+            onTap: () {
+
+            showDialog(
+
+              context: context,
+
+              builder: (context) {
+
+                return AlertDialog(
+
+                  title: Text('Debt Details'),
+
+                  content: Column(
+
+                    mainAxisSize: MainAxisSize.min,
+
+                    children: [
+
+                      Text('Name: $name'),
+
+                      Text('Amount: $amount'),
+
+                      Text('Paid: ${paid? 'Yes' : 'No'}'),
+
+                      Text('Doc ID: $docId'),
+
+                    ],
+
+                  ),
+
+                  actions: [
+
+                    MyButton(
+
+                      text: 'Close',
+
+                      onPressed: () {
+
+                        Navigator.of(context).pop();
+
+                      },
+
+                    ),
+
+                  ],
+
+                );
+
+              },
+
+            );
+
+          },
             title: Text(name, style: TextStyle(fontFamily: 'ClashGrotesk', fontWeight: FontWeight.w500, fontSize: 16),),
             subtitle: Row(
               children: const [
