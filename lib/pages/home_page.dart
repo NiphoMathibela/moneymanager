@@ -71,8 +71,12 @@ class _HomePageState extends State<HomePage> {
               if (docId == null) {
                 fireStoreService.addDebtor(_controller.text, _controller2.text,
                     _numberController.text, paid);
+                fireStoreService.addDebtorHistory(_controller.text, _controller2.text,
+                    _numberController.text, paid);
               } else {
                 fireStoreService.updateDebt(
+                    docId, _controller.text, _controller2.text, paid);
+                fireStoreService.updateDebtHistory(
                     docId, _controller.text, _controller2.text, paid);
               }
               _controller.clear();
@@ -133,12 +137,14 @@ class _HomePageState extends State<HomePage> {
 
                   String nameText = data['name'];
                   String amountText = data['amount'];
+                  String interestAmountText = data['interestAmount'];
                   bool paidValue = data['paid'];
                   String contact = data['contact'];
 
                   return DebtorTile(
                     name: nameText,
                     amount: amountText,
+                    interestAmount: interestAmountText,
                     paid: paidValue,
                     docId: docId,
                     contact: contact,

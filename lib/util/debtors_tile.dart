@@ -14,6 +14,7 @@ class DebtorTile extends StatelessWidget {
 //Variables
   final String name;
   final String amount;
+  final String interestAmount;
   final bool paid;
   final String docId;
   final String contact;
@@ -25,6 +26,7 @@ class DebtorTile extends StatelessWidget {
       {super.key,
       required this.name,
       required this.amount,
+      required this.interestAmount,
       required this.paid,
       required this.deleteFunction,
       required this.editFunction,
@@ -74,7 +76,8 @@ class DebtorTile extends StatelessWidget {
                         Text('Paid: ${paid ? 'Yes' : 'No'}'),
                         GestureDetector(
                             onTap: () async {
-                              final phoneNumber = 'tel:$contact'; // add the 'tel:' scheme
+                              final phoneNumber =
+                                  'tel:$contact'; // add the 'tel:' scheme
                               final uri = Uri.parse(phoneNumber);
                               if (await canLaunchUrl(uri)) {
                                 await launchUrl(uri);
@@ -132,7 +135,7 @@ class DebtorTile extends StatelessWidget {
                 ),
                 Icon(Icons.monetization_on),
                 Text(
-                  amount,
+                  interestAmount,
                   style: TextStyle(
                       fontFamily: "ClashGrotesk",
                       fontSize: 12,
