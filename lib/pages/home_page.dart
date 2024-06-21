@@ -134,12 +134,14 @@ class _HomePageState extends State<HomePage> {
                   String nameText = data['name'];
                   String amountText = data['amount'];
                   bool paidValue = data['paid'];
+                  String contact = data['contact'];
 
                   return DebtorTile(
                     name: nameText,
                     amount: amountText,
                     paid: paidValue,
                     docId: docId,
+                    contact: contact,
                     deleteFunction: (context) =>
                         fireStoreService.deleteDebt(docId),
                     editFunction: (context) => createNewDebtor(docId: docId),

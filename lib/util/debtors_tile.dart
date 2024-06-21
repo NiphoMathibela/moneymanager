@@ -15,6 +15,7 @@ class DebtorTile extends StatelessWidget {
   final String amount;
   final bool paid;
   final String docId;
+  final String contact;
   Function(BuildContext)? deleteFunction;
   Function(BuildContext)? editFunction;
   Function(BuildContext)? viewDebtFunction;
@@ -27,8 +28,8 @@ class DebtorTile extends StatelessWidget {
       required this.deleteFunction,
       required this.editFunction,
       required this.docId,
-      required this.viewDebtFunction
-      });
+      required this.contact,
+      required this.viewDebtFunction});
 
   @override
   Widget build(BuildContext context) {
@@ -57,68 +58,57 @@ class DebtorTile extends StatelessWidget {
           decoration: BoxDecoration(
               color: Color.fromRGBO(245, 245, 245, 1),
               borderRadius: BorderRadius.circular(10)),
-
           child: ListTile(
             onTap: () {
-
-            showDialog(
-
-              context: context,
-
-              builder: (context) {
-
-                return AlertDialog(
-
-                  title: Text('Debt Details'),
-
-                  content: Column(
-
-                    mainAxisSize: MainAxisSize.min,
-
-                    children: [
-
-                      Text('Name: $name'),
-
-                      Text('Amount: $amount'),
-
-                      Text('Paid: ${paid? 'Yes' : 'No'}'),
-
-                      Text('Doc ID: $docId'),
-
-                    ],
-
-                  ),
-
-                  actions: [
-
-                    MyButton(
-
-                      text: 'Close',
-
-                      onPressed: () {
-
-                        Navigator.of(context).pop();
-
-                      },
-
+              showDialog(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    title: Text('Debt Details'),
+                    content: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text('Name: $name'),
+                        Text('Amount: $amount'),
+                        Text('Paid: ${paid ? 'Yes' : 'No'}'),
+                        Text('Number: $contact'),
+                      ],
                     ),
-
-                  ],
-
-                );
-
-              },
-
-            );
-
-          },
-            title: Text(name, style: TextStyle(fontFamily: 'ClashGrotesk', fontWeight: FontWeight.w500, fontSize: 16),),
-            subtitle: Row(
-              children: const [
-                Icon(Icons.contact_phone_rounded, size: 22, color: Color.fromRGBO(102, 102, 102, 1),),
-                Text(" 079 456 1535",style: TextStyle(fontFamily:'ClashGrotesk', fontWeight: FontWeight.w400, fontSize: 14),)
-              ],
+                    actions: [
+                      MyButton(
+                        text: 'Close',
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ],
+                  );
+                },
+              );
+            },
+            title: Text(
+              name,
+              style: TextStyle(
+                  fontFamily: 'ClashGrotesk',
+                  fontWeight: FontWeight.w500,
+                  fontSize: 16),
             ),
+            // subtitle: Row(
+            //   children: [
+            //     Icon(
+            //       Icons.contact_phone_rounded,
+            //       size: 22,
+            //       color: Color.fromRGBO(102, 102, 102, 1),
+            //     ),
+            //     Text(
+            //       contact,
+            //       style: TextStyle(
+            //           fontFamily: 'ClashGrotesk',
+            //           fontWeight: FontWeight.w400,
+            //           fontSize: 14),
+            //     )
+            //   ],
+            // ),
             trailing: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -130,7 +120,13 @@ class DebtorTile extends StatelessWidget {
                   width: 8,
                 ),
                 Icon(Icons.monetization_on),
-                Text(amount, style: TextStyle(fontFamily: "ClashGrotesk", fontSize: 12, fontWeight: FontWeight.w500),)
+                Text(
+                  amount,
+                  style: TextStyle(
+                      fontFamily: "ClashGrotesk",
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500),
+                )
               ],
             ),
           ),
