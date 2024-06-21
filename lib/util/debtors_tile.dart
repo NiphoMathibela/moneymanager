@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:moneymanager/util/my_button.dart';
 import 'package:moneymanager/util/toggle_paid.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 // ignore: must_be_immutable
 class DebtorTile extends StatelessWidget {
@@ -71,7 +72,17 @@ class DebtorTile extends StatelessWidget {
                         Text('Name: $name'),
                         Text('Amount: $amount'),
                         Text('Paid: ${paid ? 'Yes' : 'No'}'),
-                        Text('Number: $contact'),
+                        GestureDetector(
+                            onTap: () async {
+                              final phoneNumber = 'tel:$contact'; // add the 'tel:' scheme
+                              final uri = Uri.parse(phoneNumber);
+                              if (await canLaunchUrl(uri)) {
+                                await launchUrl(uri);
+                              } else {
+                                throw 'Could not launch $phoneNumber';
+                              }
+                            },
+                            child: Text('Number: $contact')),
                       ],
                     ),
                     actions: [

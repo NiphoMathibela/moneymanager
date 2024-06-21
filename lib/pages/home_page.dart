@@ -107,7 +107,7 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         backgroundColor: Colors.white60,
         title: const Text(
-          "Welcome!",
+          "Debts",
           style: TextStyle(
               fontFamily: "ClashGrotesk", fontWeight: FontWeight.w700),
         ),
@@ -145,7 +145,7 @@ class _HomePageState extends State<HomePage> {
                     deleteFunction: (context) =>
                         fireStoreService.deleteDebt(docId),
                     editFunction: (context) => createNewDebtor(docId: docId),
-                    viewDebtFunction:(context) => viewDebt(),
+                    viewDebtFunction: (context) => viewDebt(),
                   );
                 });
           } else {
