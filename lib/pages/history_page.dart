@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:moneymanager/pages/account_page.dart';
 import 'package:moneymanager/pages/home_page.dart';
 import 'package:moneymanager/services/firestore.dart';
+import 'package:moneymanager/util/searchbar.dart';
 
 class HistoryPage extends StatefulWidget {
   const HistoryPage({super.key});
@@ -34,16 +35,6 @@ class _HistoryPageState extends State<HistoryPage> {
     });
   }
 
-  //   Future<void> _calculatePaid() async {
-  //   final sum = await fireStoreService.calculateSum();
-  //   final paid = await fireStoreService.calculatePaid();
-
-  //   setState(() {
-  //     _owedFuture = sum;
-  //     _recievedFuture = paid;
-  //   });
-  // }
-
   //Navigation functions
   int _currentIndex = 1;
 
@@ -72,97 +63,101 @@ class _HistoryPageState extends State<HistoryPage> {
         ),
         elevation: 1,
       ),
-      body: Container(
-          child: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Row(
-            mainAxisAlignment:
-                MainAxisAlignment.spaceEvenly, // space the containers evenly
-
-            children: [
-              Expanded(
-                child: Container(
-                  height: 140, // adjust the height as needed
-
-                  // width: 160, // adjust the width as needed
-
-                  // background color of the container
-
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: Color.fromRGBO(235, 178, 255, 1),
-                  ),
-
-                  //Container content
-                  child: Padding(
-                    padding: EdgeInsets.all(18),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Icon(Icons.work),
-                        const Text(
-                          "Recieved",
-                          style: TextStyle(
-                              fontFamily: "ClashGrotesk",
-                              fontSize: 15,
-                              color: Color.fromRGBO(102, 102, 102, 1),
-                              fontWeight: FontWeight.w600),
-                        ),
-                        Text(
-                          "R $_recievedFuture",
-                          style: const TextStyle(
-                              fontFamily: "ClashGrotesk",
-                              fontSize: 17,
-                              fontWeight: FontWeight.w600),
-                        )
-                      ],
-                    ),
+      body: Padding(
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                children: [Row(
+                        mainAxisAlignment:
+                            MainAxisAlignment.spaceEvenly, // space the containers evenly
+                      
+                        children: [
+                          Expanded(
+                            child: Container(
+                height: 140, // adjust the height as needed
+                      
+                // width: 160, // adjust the width as needed
+                      
+                // background color of the container
+                      
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: Color.fromRGBO(235, 178, 255, 1),
+                ),
+                      
+                //Container content
+                child: Padding(
+                  padding: EdgeInsets.all(18),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Icon(Icons.work),
+                      const Text(
+                        "Recieved",
+                        style: TextStyle(
+                            fontFamily: "ClashGrotesk",
+                            fontSize: 15,
+                            color: Color.fromRGBO(102, 102, 102, 1),
+                            fontWeight: FontWeight.w600),
+                      ),
+                      Text(
+                        "R $_recievedFuture",
+                        style: const TextStyle(
+                            fontFamily: "ClashGrotesk",
+                            fontSize: 17,
+                            fontWeight: FontWeight.w600),
+                      )
+                    ],
                   ),
                 ),
-              ),
-              const SizedBox(
-                width: 10,
-              ),
-              Expanded(
-                child: Container(
-                  height: 140, // adjust the height as needed
-
-                  // width: 160, // adjust the width as needed
-
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: const Color.fromRGBO(167, 254, 217, 1),
-                  ),
-
-                  //Container content
-                  child: Padding(
-                    padding: EdgeInsets.all(18),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Icon(Icons.payment_rounded),
-                        const Text(
-                          "Loaned",
-                          style: TextStyle(
-                              fontFamily: "ClashGrotesk",
-                              fontSize: 15,
-                              color: Color.fromRGBO(102, 102, 102, 1),
-                              fontWeight: FontWeight.w600),
-                        ),
-                        Text(
-                          "R $_owedFuture",
-                          style: const TextStyle(
-                              fontFamily: "ClashGrotesk",
-                              fontSize: 17,
-                              fontWeight: FontWeight.w600),
-                        )
-                      ],
-                    ),
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          Expanded(
+                            child: Container(
+                height: 140, // adjust the height as needed
+                      
+                // width: 160, // adjust the width as needed
+                      
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: const Color.fromRGBO(167, 254, 217, 1),
+                ),
+                      
+                //Container content
+                child: Padding(
+                  padding: EdgeInsets.all(18),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Icon(Icons.payment_rounded),
+                      const Text(
+                        "Owed",
+                        style: TextStyle(
+                            fontFamily: "ClashGrotesk",
+                            fontSize: 15,
+                            color: Color.fromRGBO(102, 102, 102, 1),
+                            fontWeight: FontWeight.w600),
+                      ),
+                      Text(
+                        "R $_owedFuture",
+                        style: const TextStyle(
+                            fontFamily: "ClashGrotesk",
+                            fontSize: 17,
+                            fontWeight: FontWeight.w600),
+                      )
+                    ],
                   ),
                 ),
+                            ),
+                          ),
+                        ]), const Padding(
+                          padding: EdgeInsets.only(top: 15.0, bottom: 10.0),
+                          child: SearchBarDebt(),
+                        )],
               ),
-            ]),
-      )),
+            ),
       bottomNavigationBar: BottomNavigationBar(
           items: const [
             BottomNavigationBarItem(
