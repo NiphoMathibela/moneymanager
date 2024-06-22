@@ -69,9 +69,12 @@ class _HomePageState extends State<HomePage> {
             onSave: () {
               bool paid = false;
               if (docId == null) {
-                fireStoreService.addDebtor(_controller.text, _controller2.text,
+                //Creating a docId for both documenta
+                final docId = FirebaseFirestore.instance.collection('debtorsList').doc().id;
+                
+                fireStoreService.addDebtor(docId, _controller.text, _controller2.text,
                     _numberController.text, paid);
-                fireStoreService.addDebtorHistory(_controller.text, _controller2.text,
+                fireStoreService.addDebtorHistory(docId, _controller.text, _controller2.text,
                     _numberController.text, paid);
               } else {
                 fireStoreService.updateDebt(

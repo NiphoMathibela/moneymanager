@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:moneymanager/pages/account_page.dart';
 import 'package:moneymanager/pages/home_page.dart';
+import 'package:moneymanager/services/firestore.dart';
 
 class HistoryPage extends StatefulWidget {
   const HistoryPage({super.key});
@@ -10,6 +11,39 @@ class HistoryPage extends StatefulWidget {
 }
 
 class _HistoryPageState extends State<HistoryPage> {
+  //Access firestore
+  final FireStoreService fireStoreService = FireStoreService();
+
+  //Page values
+  double _owedFuture = 0;
+  double _recievedFuture = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _calculateSum();
+  }
+
+  Future<void> _calculateSum() async {
+    final sum = await fireStoreService.calculateSum();
+    final paid = await fireStoreService.calculatePaid();
+
+    setState(() {
+      _owedFuture = sum;
+      _recievedFuture = paid;
+    });
+  }
+
+  //   Future<void> _calculatePaid() async {
+  //   final sum = await fireStoreService.calculateSum();
+  //   final paid = await fireStoreService.calculatePaid();
+
+  //   setState(() {
+  //     _owedFuture = sum;
+  //     _recievedFuture = paid;
+  //   });
+  // }
+
   //Navigation functions
   int _currentIndex = 1;
 
@@ -31,7 +65,11 @@ class _HistoryPageState extends State<HistoryPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text("History", style: TextStyle(fontFamily: "ClashGrotesk", fontWeight: FontWeight.w700),),
+        title: const Text(
+          "History",
+          style: TextStyle(
+              fontFamily: "ClashGrotesk", fontWeight: FontWeight.w700),
+        ),
         elevation: 1,
       ),
       body: Container(
@@ -56,14 +94,27 @@ class _HistoryPageState extends State<HistoryPage> {
                   ),
 
                   //Container content
-                  child: const Padding(
+                  child: Padding(
                     padding: EdgeInsets.all(18),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Icon(Icons.work),
-                        Text("Recieved", style: TextStyle(fontFamily: "ClashGrotesk", fontSize: 15, color: Color.fromRGBO(102, 102, 102, 1), fontWeight: FontWeight.w600),),
-                        Text("R 15,000.00", style: TextStyle(fontFamily: "ClashGrotesk", fontSize: 17, fontWeight: FontWeight.w600),)
+                        const Icon(Icons.work),
+                        const Text(
+                          "Recieved",
+                          style: TextStyle(
+                              fontFamily: "ClashGrotesk",
+                              fontSize: 15,
+                              color: Color.fromRGBO(102, 102, 102, 1),
+                              fontWeight: FontWeight.w600),
+                        ),
+                        Text(
+                          "R $_recievedFuture",
+                          style: const TextStyle(
+                              fontFamily: "ClashGrotesk",
+                              fontSize: 17,
+                              fontWeight: FontWeight.w600),
+                        )
                       ],
                     ),
                   ),
@@ -84,14 +135,27 @@ class _HistoryPageState extends State<HistoryPage> {
                   ),
 
                   //Container content
-                  child: const Padding(
+                  child: Padding(
                     padding: EdgeInsets.all(18),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Icon(Icons.payment_rounded),
-                        Text("Loaned",style: TextStyle(fontFamily: "ClashGrotesk", fontSize: 15, color: Color.fromRGBO(102, 102, 102, 1), fontWeight: FontWeight.w600),),
-                        Text("R 15,000.00", style: TextStyle(fontFamily: "ClashGrotesk", fontSize: 17, fontWeight: FontWeight.w600),)
+                        const Text(
+                          "Loaned",
+                          style: TextStyle(
+                              fontFamily: "ClashGrotesk",
+                              fontSize: 15,
+                              color: Color.fromRGBO(102, 102, 102, 1),
+                              fontWeight: FontWeight.w600),
+                        ),
+                        Text(
+                          "R $_owedFuture",
+                          style: const TextStyle(
+                              fontFamily: "ClashGrotesk",
+                              fontSize: 17,
+                              fontWeight: FontWeight.w600),
+                        )
                       ],
                     ),
                   ),

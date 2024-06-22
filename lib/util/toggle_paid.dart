@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:moneymanager/services/firestore.dart';
 
+// ignore: must_be_immutable
 class TogglePaid extends StatelessWidget {
   bool isPaid;
   String docId;
-  
+
   final FireStoreService fireStoreService = FireStoreService();
 
   changePaid(bool paid, String docId) async {
@@ -14,6 +15,7 @@ class TogglePaid extends StatelessWidget {
     if (newPaid != paid) {
       // Update the Firestore field
       await fireStoreService.updateSingleField(docId, newPaid);
+      await fireStoreService.updateSingleFieldHistory(docId, newPaid);
     }
   }
 
@@ -26,7 +28,8 @@ class TogglePaid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => changePaid(isPaid, docId), // Call the changePaid function here
+      onTap: () =>
+          changePaid(isPaid, docId), // Call the changePaid function here
       child: Container(
         height: 25,
         width: 70,
