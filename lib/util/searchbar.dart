@@ -17,23 +17,28 @@ class _SearchBarState extends State<SearchBarDebt> {
       child: Row(
         children: <Widget>[
           Expanded(
-            child: TextField(
-              controller: _searchController,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: "Search...",
-                filled: true,
-                fillColor: Color.fromRGBO(245, 245, 245, 1),
+            child: SizedBox(
+              height: 54,
+              child: TextField(
+                controller: _searchController,
+                decoration: const InputDecoration(
+                  contentPadding: EdgeInsets.all(14),
+                  border: OutlineInputBorder(),
+                  hintText: "Search...",
+                  filled: true,
+                  fillColor: Color.fromRGBO(245, 245, 245, 1),
+                  prefixIcon: Icon(Icons.search_rounded),
+                ),
               ),
             ),
           ),
-          const SizedBox(width: 10.0),
-          IconButton(
-            icon: const Icon(Icons.clear),
-            onPressed: () {
-              _searchController.clear();
-            },
-          ),
+          // const SizedBox(width: 10.0),
+          // IconButton(
+          //   icon: const Icon(Icons.clear),
+          //   onPressed: () {
+          //     _searchController.clear();
+          //   },
+          // ),
         ],
       ),
     );
