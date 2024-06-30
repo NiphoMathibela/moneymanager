@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:moneymanager/util/auth_button.dart';
+import 'package:moneymanager/util/my_button.dart';
 
 class SignUp extends StatefulWidget {
   SignUp({super.key});
@@ -23,8 +25,17 @@ class _SignUpState extends State<SignUp> {
           padding: const EdgeInsets.all(20.0),
           child: Column(
             children: [
-              const Text("Welcome!", style: TextStyle(fontFamily: "ClashGrotesk", fontWeight: FontWeight.w700, fontSize: 48),),
-              const Text("Sign and manage your finances with ease.", style: TextStyle(fontFamily: "ClashGrotesk", fontWeight: FontWeight.w400, fontSize: 20),),
+              Container(height: 270, child: Image(image: AssetImage('images/flux.png'))),
+              const Text(
+                "Manage your finances with ease.",
+                style: TextStyle(
+                    fontFamily: "ClashGrotesk",
+                    fontWeight: FontWeight.w400,
+                    fontSize: 20),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
               SizedBox(
                 height: 54,
                 child: TextField(
@@ -32,12 +43,13 @@ class _SignUpState extends State<SignUp> {
                   decoration: const InputDecoration(
                     hintText: "Email",
                     contentPadding: EdgeInsets.all(14),
-                        border: OutlineInputBorder(),
-                        filled: true,
-                        fillColor: Color.fromRGBO(245, 245, 245, 1),
+                    border: OutlineInputBorder(),
+                    filled: true,
+                    fillColor: Color.fromRGBO(245, 245, 245, 1),
                   ),
                 ),
               ),
+              const SizedBox(height: 6,),
               SizedBox(
                 height: 54,
                 child: TextField(
@@ -45,12 +57,14 @@ class _SignUpState extends State<SignUp> {
                   decoration: const InputDecoration(
                     hintText: "Password",
                     contentPadding: EdgeInsets.all(14),
-                        border: OutlineInputBorder(),
-                        filled: true,
-                        fillColor: Color.fromRGBO(245, 245, 245, 1),
+                    border: OutlineInputBorder(),
+                    filled: true,
+                    fillColor: Color.fromRGBO(245, 245, 245, 1),
                   ),
                 ),
               ),
+              const SizedBox(height: 12,),
+              AuthButton(btnText: "Sign In", onPressed: () => {})
             ],
           ),
         ),
