@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 class AuthButton extends StatelessWidget {
   final String btnText;
-  VoidCallback onPressed;
+  VoidCallback onTap;
 
-  AuthButton({super.key, required this.btnText, required this.onPressed});
+  AuthButton({super.key, required this.btnText, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onPressed,
+      onTap: onTap,
       child: Container(
         padding: EdgeInsets.all(20),
         decoration: BoxDecoration(color: Colors.black, borderRadius: BorderRadius.circular(12),),
