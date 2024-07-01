@@ -14,7 +14,7 @@ class FireStoreService {
 
   //CREATE: add new debtor
   Future<void> addDebtor(
-     String docId ,String name, String amount, String contact, bool paid) {
+     String docId ,String name, String amount, String contact, bool paid, String? userId) {
     //Adding interest
     int num = int.parse(amount);
     double interestNum = num * (1 + 0.3);
@@ -27,17 +27,20 @@ class FireStoreService {
     'interestAmount': finalAmount,
     'contact': contact,
     'paid': paid,
+    'userId': userId,
     'date': DateTime.now()
   });
   }
 
   //READ: get debtors
-  Stream<QuerySnapshot> getDebtorsStream() {
-    final debtorStream =
-        debtorList.orderBy('date', descending: true).snapshots();
+Stream<QuerySnapshot> getDebtorsStream(String? userId) {
+  final debtorStream = debtorList
+      .where('userId', isEqualTo: userId) // Filter by userId
+      .orderBy('date', descending: true)
+      .snapshots();
 
-    return debtorStream;
-  }
+  return debtorStream;
+}
 
   //CREATE: update
   Future<void> updateDebt(
@@ -92,7 +95,7 @@ class FireStoreService {
 
   //CREATE: add new debtor
   Future<void> addDebtorHistory(
-      String docId, String name, String amount, String contact, bool paid) {
+      String docId, String name, String amount, String contact, bool paid, String? userId) {
     //Adding interest
     int num = int.parse(amount);
     double interestNum = num * (1 + 0.3);
@@ -106,6 +109,7 @@ class FireStoreService {
     'interestAmount': finalAmount,
     'contact': contact,
     'paid': paid,
+    'userId': userId,
     'date': DateTime.now()
   });
 

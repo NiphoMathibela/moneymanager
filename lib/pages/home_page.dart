@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:moneymanager/pages/account_page.dart';
 import 'package:moneymanager/pages/history_page.dart';
@@ -22,6 +23,42 @@ class _HomePageState extends State<HomePage> {
   final _controller = TextEditingController();
   final _controller2 = TextEditingController();
   final _numberController = TextEditingController();
+
+  //User ID
+  String? _uid;
+
+  //User change stream
+  Stream<User?> authStateChanges = FirebaseAuth.instance.authStateChanges();
+
+ @override
+
+  void initState() {
+
+    super.initState();
+
+    authStateChanges.listen((User? user) {
+
+      if (user != null) {
+
+        // User is signed in
+
+        _uid = user.uid;
+
+        print('Logged in user UID: $_uid');
+
+      } else {
+
+        // User is signed out
+
+        _uid = null;
+
+        print('No user is currently signed in.');
+
+      }
+
+    });
+
+  }
 
   //Navigation functions
   int _currentIndex = 0;
@@ -70,12 +107,15 @@ class _HomePageState extends State<HomePage> {
               bool paid = false;
               if (docId == null) {
                 //Creating a docId for both documenta
-                final docId = FirebaseFirestore.instance.collection('debtorsList').doc().id;
-                
-                fireStoreService.addDebtor(docId, _controller.text, _controller2.text,
-                    _numberController.text, paid);
-                fireStoreService.addDebtorHistory(docId, _controller.text, _controller2.text,
-                    _numberController.text, paid);
+                final docId = FirebaseFirestore.instance
+                    .collection('debtorsList')
+                    .doc()
+                    .id;
+
+                fireStoreService.addDebtor(docId, _controller.text,
+                    _controller2.text, _numberController.text, paid, _uid);
+                fireStoreService.addDebtorHistory(docId, _controller.text,
+                    _controller2.text, _numberController.text, paid, _uid);
               } else {
                 fireStoreService.updateDebt(
                     docId, _controller.text, _controller2.text, paid);
@@ -121,7 +161,7 @@ class _HomePageState extends State<HomePage> {
         elevation: 1,
       ),
       body: StreamBuilder<QuerySnapshot>(
-        stream: fireStoreService.getDebtorsStream(),
+        stream: fireStoreService.getDebtorsStream(_uid),
         builder: (context, snapshot) {
           //if we have data get all the docs
           if (snapshot.hasData) {
