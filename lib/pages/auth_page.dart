@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:moneymanager/pages/home_page.dart';
+import 'package:moneymanager/pages/signIp_or_login.dart';
 import 'package:moneymanager/pages/signup_page.dart';
 
 class AuthPage extends StatelessWidget {
@@ -19,7 +20,7 @@ class AuthPage extends StatelessWidget {
             } else {
               //User is not logged in
               print("User not logged in");
-              return SignUp();
+              return const SignupOrLogin();
             }
           }),
     );

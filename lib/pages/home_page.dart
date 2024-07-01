@@ -37,25 +37,16 @@ class _HomePageState extends State<HomePage> {
     super.initState();
 
     authStateChanges.listen((User? user) {
-
       if (user != null) {
-
         // User is signed in
-
         _uid = user.uid;
-
         print('Logged in user UID: $_uid');
 
       } else {
-
         // User is signed out
-
         _uid = null;
-
         print('No user is currently signed in.');
-
       }
-
     });
 
   }
@@ -147,6 +138,12 @@ class _HomePageState extends State<HomePage> {
         });
   }
 
+//Get currently logged in user with UserID 
+  String? getUid() {
+  final user = FirebaseAuth.instance.currentUser;
+  return user?.uid;
+}
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -161,7 +158,7 @@ class _HomePageState extends State<HomePage> {
         elevation: 1,
       ),
       body: StreamBuilder<QuerySnapshot>(
-        stream: fireStoreService.getDebtorsStream(_uid),
+        stream: fireStoreService.getDebtorsStream(getUid()),
         builder: (context, snapshot) {
           //if we have data get all the docs
           if (snapshot.hasData) {

@@ -11,41 +11,39 @@ class FireStoreService {
   final CollectionReference debtHistory =
       FirebaseFirestore.instance.collection('debtHistory');
 
-
   //CREATE: add new debtor
-  Future<void> addDebtor(
-     String docId ,String name, String amount, String contact, bool paid, String? userId) {
+  Future<void> addDebtor(String docId, String name, String amount,
+      String contact, bool paid, String? userId) {
     //Adding interest
     int num = int.parse(amount);
     double interestNum = num * (1 + 0.3);
 
     final String finalAmount = interestNum.toString();
 
-  return debtorList.doc(docId).set({
-    'name': name,
-    'amount': amount,
-    'interestAmount': finalAmount,
-    'contact': contact,
-    'paid': paid,
-    'userId': userId,
-    'date': DateTime.now()
-  });
+    return debtorList.doc(docId).set({
+      'name': name,
+      'amount': amount,
+      'interestAmount': finalAmount,
+      'contact': contact,
+      'paid': paid,
+      'userId': userId,
+      'date': DateTime.now()
+    });
   }
 
   //READ: get debtors
-Stream<QuerySnapshot> getDebtorsStream(String? userId) {
-  final debtorStream = debtorList
-      .where('userId', isEqualTo: userId) // Filter by userId
-      .orderBy('date', descending: true)
-      .snapshots();
+  Stream<QuerySnapshot> getDebtorsStream(String? userId) {
+    final debtorStream = debtorList
+        .where('userId', isEqualTo: userId)
+        .orderBy('date', descending: true)
+        .snapshots();
 
-  return debtorStream;
-}
+    return debtorStream;
+  }
 
   //CREATE: update
   Future<void> updateDebt(
       String docId, String newName, String newAmount, bool paid) {
-
     //Adding interest
     int num = int.parse(newAmount);
     double interestNum = num * (1 + 0.3);
@@ -75,7 +73,8 @@ Stream<QuerySnapshot> getDebtorsStream(String? userId) {
   //---------------------------------------------------------------------------
   //
 
-  Future<void> mirrorDataToCollection2(String documentId, String collection1Path) async {
+  Future<void> mirrorDataToCollection2(
+      String documentId, String collection1Path) async {
     // Get document data from collection1
     final docRef = debtorList.doc(documentId);
     final docSnapshot = await docRef.get();
@@ -92,85 +91,75 @@ Stream<QuerySnapshot> getDebtorsStream(String? userId) {
     }
   }
 
-
   //CREATE: add new debtor
-  Future<void> addDebtorHistory(
-      String docId, String name, String amount, String contact, bool paid, String? userId) {
+  Future<void> addDebtorHistory(String docId, String name, String amount,
+      String contact, bool paid, String? userId) {
     //Adding interest
     int num = int.parse(amount);
     double interestNum = num * (1 + 0.3);
 
     final String finalAmount = interestNum.toString();
 
-
-  return debtHistory.doc(docId).set({
-    'name': name,
-    'amount': amount,
-    'interestAmount': finalAmount,
-    'contact': contact,
-    'paid': paid,
-    'userId': userId,
-    'date': DateTime.now()
-  });
-
+    return debtHistory.doc(docId).set({
+      'name': name,
+      'amount': amount,
+      'interestAmount': finalAmount,
+      'contact': contact,
+      'paid': paid,
+      'userId': userId,
+      'date': DateTime.now()
+    });
   }
 
   //READ: get debtors
   Stream<QuerySnapshot> getDebtorsStreamHistory() {
     final debtorStream =
         debtHistory.orderBy('date', descending: true).snapshots();
-        
 
     return debtorStream;
   }
 
   //Get Sum of amounts
-Future<double> calculateSum() async {
-  final db = FirebaseFirestore.instance;
-  final collectionRef = db.collection('debtHistory');
+  Future<double> calculateSum() async {
+    final db = FirebaseFirestore.instance;
+    final collectionRef = db.collection('debtHistory');
 
-double sum = 0.0;
+    double sum = 0.0;
 
+    await collectionRef.get().then((querySnapshot) {
+      querySnapshot.docs.forEach((doc) {
+        sum += double.parse(doc['interestAmount'].trim());
+      });
+    });
 
-await collectionRef.get().then((querySnapshot) {
+    print('Sum: $sum');
 
-  querySnapshot.docs.forEach((doc) {
-    sum += double.parse(doc['interestAmount'].trim());
-  });
-});
-
-
-  print('Sum: $sum');
-
-  return sum;
-}
+    return sum;
+  }
 
   //Get Sum of amounts if paid
-Future<double> calculatePaid() async {
-  final db = FirebaseFirestore.instance;
-  final collectionRef = db.collection('debtHistory');
+  Future<double> calculatePaid() async {
+    final db = FirebaseFirestore.instance;
+    final collectionRef = db.collection('debtHistory');
 
-double sum = 0.0;
+    double sum = 0.0;
 
+    await collectionRef.get().then((querySnapshot) {
+      querySnapshot.docs.forEach((doc) {
+        if (doc['paid']) {
+          sum += double.parse(doc['interestAmount'].trim());
+        }
+      });
+    });
 
-await collectionRef.get().then((querySnapshot) {
+    print('Sum: $sum');
 
-  querySnapshot.docs.forEach((doc) {
-    if (doc['paid']) {
-      sum += double.parse(doc['interestAmount'].trim());
-    }
-  });
-});
-
-  print('Sum: $sum');
-
-  return sum;
-}
+    return sum;
+  }
 
   //CREATE: update
   Future<void> updateDebtHistory(
       String docId, String newName, String newAmount, bool paid) {
-
     //Adding interest
     int num = int.parse(newAmount);
     double interestNum = num * (1 + 0.3);

@@ -1,6 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:moneymanager/pages/auth_page.dart';
 import 'package:moneymanager/pages/history_page.dart';
 import 'package:moneymanager/pages/home_page.dart';
+import 'package:moneymanager/pages/signIp_or_login.dart';
+import 'package:moneymanager/pages/signup_page.dart';
+import 'package:moneymanager/util/auth_button.dart';
 
 class AccountPage extends StatefulWidget {
   const AccountPage({super.key});
@@ -10,6 +15,9 @@ class AccountPage extends StatefulWidget {
 }
 
 class _AccountPageState extends State<AccountPage> {
+  //Firebase instance
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
   //Navigation functions
   int _currentIndex = 2;
 
@@ -26,48 +34,70 @@ class _AccountPageState extends State<AccountPage> {
     );
   }
 
+  //Sign Out function
+  void signOut() {
+    _auth.signOut();
+    // Navigate to the login page
+  Navigator.pushReplacement(
+    context,
+    MaterialPageRoute(builder: (context) => const AuthPage()));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text("Account", style: TextStyle(fontFamily: "ClashGrotesk", fontWeight: FontWeight.w600),),
+        title: const Text(
+          "Account",
+          style: TextStyle(
+              fontFamily: "ClashGrotesk", fontWeight: FontWeight.w600),
+        ),
         backgroundColor: Colors.white60,
         elevation: 1,
       ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
-            child: Container(
+      body: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+          children: [
+            Container(
               padding: const EdgeInsets.only(top: 4, bottom: 4),
               decoration: BoxDecoration(
                   color: const Color.fromRGBO(245, 245, 245, 1),
                   borderRadius: BorderRadius.circular(10)),
-            
+                    
               //Email List tile
               child: const ListTile(
                 leading: Icon(Icons.email),
-                title: Text("Change email", style: TextStyle(fontFamily: "ClashGrotesk", fontWeight: FontWeight.w400),),
+                title: Text(
+                  "Change email",
+                  style: TextStyle(
+                      fontFamily: "ClashGrotesk", fontWeight: FontWeight.w400),
+                ),
               ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
-            child: Container(
+            const SizedBox(height: 8,),
+            Container(
               padding: const EdgeInsets.only(top: 4, bottom: 4),
               decoration: BoxDecoration(
                   color: const Color.fromRGBO(245, 245, 245, 1),
                   borderRadius: BorderRadius.circular(10)),
-            
+                    
               //Account List tile
               child: const ListTile(
                 leading: Icon(Icons.key),
-                title: Text("Change password", style: TextStyle(fontFamily: "ClashGrotesk", fontWeight: FontWeight.w400),),
+                title: Text(
+                  "Change password",
+                  style: TextStyle(
+                      fontFamily: "ClashGrotesk", fontWeight: FontWeight.w400),
+                ),
               ),
             ),
-          ),
-        ],
+            const SizedBox(height: 12,),
+            //Sign out
+            AuthButton(btnText: "Sign Out", onTap: signOut)
+          ],
+        ),
       ),
       bottomNavigationBar: BottomNavigationBar(
           items: const [

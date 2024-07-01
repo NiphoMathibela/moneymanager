@@ -5,35 +5,39 @@ import 'package:moneymanager/services/firestore.dart';
 import 'package:moneymanager/util/auth_button.dart';
 import 'package:moneymanager/util/my_button.dart';
 
-class SignUp extends StatefulWidget {
+class Register extends StatefulWidget {
   final Function()? onReg;
-
-  const SignUp({super.key, required this.onReg});
+  Register({super.key, required this.onReg});
 
   @override
-  State<SignUp> createState() => _SignUpState();
+  State<Register> createState() => _RegisterState();
 }
 
-class _SignUpState extends State<SignUp> {
+class _RegisterState extends State<Register> {
   //Form controllers
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _passwordConController = TextEditingController();
 
   //Sign in with email and password
-  Future<void> signIn() async {
-    print("TAPPED!!");
-    print("EMAIL:" + _emailController.text);
+  Future<void> registerUser() async {
     try {
-      final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: _emailController.text.trim(),
-          password: _passwordController.text.trim());
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'user-not-found') {
-        print('No user found for that email.');
-      } else if (e.code == 'wrong-password') {
-        print('Wrong password provided for that user.');
+      if (_passwordConController.text == _passwordController.text) {
+        final credential =
+            await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: _emailController.text,
+          password: _passwordConController.text,
+        );
       }
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'weak-password') {
+        print('The password provided is too weak.');
+      } else if (e.code == 'email-already-in-use') {
+        print('The account already exists for that email.');
+      }
+    } catch (e) {
+      print(e);
     }
   }
 
@@ -51,7 +55,7 @@ class _SignUpState extends State<SignUp> {
                     height: 270,
                     child: Image(image: AssetImage('images/flux.png'))),
                 const Text(
-                  "Manage your finances with ease.",
+                  "Create a new account.",
                   style: TextStyle(
                       fontFamily: "ClashGrotesk",
                       fontWeight: FontWeight.w400,
@@ -89,18 +93,33 @@ class _SignUpState extends State<SignUp> {
                     ),
                   ),
                 ),
+                const SizedBox(height: 6,),
+                SizedBox(
+                  height: 54,
+                  child: TextField(
+                    controller: _passwordConController,
+                    decoration: const InputDecoration(
+                      hintText: "Confirm Password",
+                      contentPadding: EdgeInsets.all(14),
+                      border: OutlineInputBorder(),
+                      filled: true,
+                      fillColor: Color.fromRGBO(245, 245, 245, 1),
+                    ),
+                  ),
+                ),
                 const SizedBox(
                   height: 12,
                 ),
                 AuthButton(
-                  btnText: "Sign In",
+                  btnText: "Register",
                   onTap: () {
-                    signIn();
+                    registerUser();
                   },
                 ),
+                //Sign in if already a user
                 GestureDetector(
                     onTap: widget.onReg,
-                    child: const Text("Don't have an account? Register")),
+                    child: const Text("Already an account? Sign in")),
               ],
             ),
           ),
