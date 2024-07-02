@@ -102,6 +102,21 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  //Format Name input
+  String formatInput(String input) {
+    List<String> words =
+        input.split(' '); // split the input into individual words
+    List<String> formattedWords = [];
+
+    for (String word in words) {
+      formattedWords.add(
+          word.substring(0, 1).toUpperCase() + word.substring(1).toLowerCase());
+    }
+
+    return formattedWords
+        .join(' '); // join the formatted words back into a single string
+  }
+
   //Create new debtor
   void createNewDebtor({String? docId}) {
     showDialog(
@@ -117,14 +132,16 @@ class _HomePageState extends State<HomePage> {
             onSave: () {
               bool paid = false;
               if (docId == null) {
+                //Formatting name input
+                final String name = formatInput(_controller.text);
                 //Creating a docId for both documenta
                 final docId = FirebaseFirestore.instance
                     .collection('debtorsList')
                     .doc()
                     .id;
 
-                fireStoreService.addDebtor(docId, _controller.text,
-                    _controller2.text, _numberController.text, paid, _uid);
+                fireStoreService.addDebtor(docId, name, _controller2.text,
+                    _numberController.text, paid, _uid);
                 fireStoreService.addDebtorHistory(docId, _controller.text,
                     _controller2.text, _numberController.text, paid, _uid);
               } else {
