@@ -1,7 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:moneymanager/pages/account_page.dart';
 import 'package:moneymanager/pages/home_page.dart';
 import 'package:moneymanager/services/firestore.dart';
+import 'package:moneymanager/util/debtors_tile.dart';
 import 'package:moneymanager/util/searchbar.dart';
 
 class HistoryPage extends StatefulWidget {
@@ -19,6 +22,12 @@ class _HistoryPageState extends State<HistoryPage> {
   double _owedFuture = 0;
   double _recievedFuture = 0;
 
+  //Controller values
+  TextEditingController searchController = TextEditingController();
+
+  //Search List
+  List<DocumentSnapshot> searchResults = [];
+
   @override
   void initState() {
     super.initState();
@@ -32,6 +41,25 @@ class _HistoryPageState extends State<HistoryPage> {
     setState(() {
       _owedFuture = sum;
       _recievedFuture = paid;
+    });
+  }
+
+  //Search DB
+  Future<void> searchDatabase() async {
+    print("TAPPED! Searching...");
+    final query = searchController.text;
+    print(searchController.text);
+    final debtorStream = fireStoreService.getDebtorsStream(getUid());
+    final querySnapshot = await debtorStream.first;
+
+    searchResults = querySnapshot.docs.where((doc) {
+      final name = doc['name'];
+      return name.contains(query);
+    }).toList();
+
+    setState(() {
+      searchResults = searchResults;
+      print("List set");
     });
   }
 
@@ -51,6 +79,12 @@ class _HistoryPageState extends State<HistoryPage> {
     );
   }
 
+  //Get currently logged in user with UserID
+  String? getUid() {
+    final user = FirebaseAuth.instance.currentUser;
+    return user?.uid;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -64,100 +98,127 @@ class _HistoryPageState extends State<HistoryPage> {
         elevation: 1,
       ),
       body: Padding(
-              padding: const EdgeInsets.all(20),
-              child: Column(
-                children: [Row(
-                        mainAxisAlignment:
-                            MainAxisAlignment.spaceEvenly, // space the containers evenly
-                      
-                        children: [
-                          Expanded(
-                            child: Container(
-                height: 140, // adjust the height as needed
-                      
-                // width: 160, // adjust the width as needed
-                      
-                // background color of the container
-                      
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  color: const Color.fromRGBO(235, 178, 255, 1),
-                ),
-                      
-                //Container content
-                child: Padding(
-                  padding: EdgeInsets.all(18),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Icon(Icons.work),
-                      const Text(
-                        "Recieved",
-                        style: TextStyle(
-                            fontFamily: "ClashGrotesk",
-                            fontSize: 15,
-                            color: Color.fromRGBO(102, 102, 102, 1),
-                            fontWeight: FontWeight.w600),
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          children: [
+            Row(
+                mainAxisAlignment: MainAxisAlignment
+                    .spaceEvenly, // space the containers evenly
+
+                children: [
+                  Expanded(
+                    child: Container(
+                      height: 140, // adjust the height as needed
+
+                      // width: 160, // adjust the width as needed
+
+                      // background color of the container
+
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: const Color.fromRGBO(235, 178, 255, 1),
                       ),
-                      Text(
-                        "R $_recievedFuture",
-                        style: const TextStyle(
-                            fontFamily: "ClashGrotesk",
-                            fontSize: 17,
-                            fontWeight: FontWeight.w600),
-                      )
-                    ],
-                  ),
-                ),
+
+                      //Container content
+                      child: Padding(
+                        padding: EdgeInsets.all(18),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Icon(Icons.work),
+                            const Text(
+                              "Recieved",
+                              style: TextStyle(
+                                  fontFamily: "ClashGrotesk",
+                                  fontSize: 15,
+                                  color: Color.fromRGBO(102, 102, 102, 1),
+                                  fontWeight: FontWeight.w600),
                             ),
-                          ),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          Expanded(
-                            child: Container(
-                height: 140, // adjust the height as needed
-                      
-                // width: 160, // adjust the width as needed
-                      
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  color: const Color.fromRGBO(167, 254, 217, 1),
-                ),
-                      
-                //Container content
-                child: Padding(
-                  padding: EdgeInsets.all(18),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Icon(Icons.payment_rounded),
-                      const Text(
-                        "Owed",
-                        style: TextStyle(
-                            fontFamily: "ClashGrotesk",
-                            fontSize: 15,
-                            color: Color.fromRGBO(102, 102, 102, 1),
-                            fontWeight: FontWeight.w600),
+                            Text(
+                              "R $_recievedFuture",
+                              style: const TextStyle(
+                                  fontFamily: "ClashGrotesk",
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.w600),
+                            )
+                          ],
+                        ),
                       ),
-                      Text(
-                        "R $_owedFuture",
-                        style: const TextStyle(
-                            fontFamily: "ClashGrotesk",
-                            fontSize: 17,
-                            fontWeight: FontWeight.w600),
-                      )
-                    ],
+                    ),
                   ),
-                ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  Expanded(
+                    child: Container(
+                      height: 140, // adjust the height as needed
+
+                      // width: 160, // adjust the width as needed
+
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: const Color.fromRGBO(167, 254, 217, 1),
+                      ),
+
+                      //Container content
+                      child: Padding(
+                        padding: EdgeInsets.all(18),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Icon(Icons.payment_rounded),
+                            const Text(
+                              "Owed",
+                              style: TextStyle(
+                                  fontFamily: "ClashGrotesk",
+                                  fontSize: 15,
+                                  color: Color.fromRGBO(102, 102, 102, 1),
+                                  fontWeight: FontWeight.w600),
                             ),
-                          ),
-                        ]), const Padding(
-                          padding: EdgeInsets.only(top: 15.0, bottom: 10.0),
-                          child: SearchBarDebt(),
-                        )],
+                            Text(
+                              "R $_owedFuture",
+                              style: const TextStyle(
+                                  fontFamily: "ClashGrotesk",
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.w600),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ]),
+            Padding(
+              padding: const EdgeInsets.only(top: 15.0, bottom: 10.0),
+              child: SearchBarDebt(
+                searchDb: searchDatabase,
+                searchController: searchController,
               ),
             ),
+            //Display search results
+            SizedBox(
+              height: 300,
+              child: ListView.builder(
+                physics: const AlwaysScrollableScrollPhysics(),
+                itemCount: searchResults.length,
+                itemBuilder: (context, index) {
+                  final document = searchResults[index];
+                  return DebtorTile(
+                      name: document['name'],
+                      amount: document['amount'],
+                      interestAmount: document['interestAmount'],
+                      paid: document['paid'],
+                      deleteFunction: (context) => {},
+                      editFunction: (context) => {},
+                      docId: document.id,
+                      contact: document['contact'],
+                      viewDebtFunction: (context) => {});
+                },
+              ),
+            )
+          ],
+        ),
+      ),
       bottomNavigationBar: BottomNavigationBar(
           items: const [
             BottomNavigationBarItem(
