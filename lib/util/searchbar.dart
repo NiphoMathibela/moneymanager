@@ -26,19 +26,21 @@ class _SearchBarState extends State<SearchBarDebt> {
                   border: OutlineInputBorder(),
                   hintText: "Search...",
                   filled: true,
-                  fillColor: Color.fromRGBO(245, 245, 245, 1),
-                  prefixIcon: Icon(Icons.search_rounded),
+                  fillColor: Color.fromRGBO(245, 245, 245, 1)
                 ),
               ),
             ),
           ),
-          // const SizedBox(width: 10.0),
-          // IconButton(
-          //   icon: const Icon(Icons.clear),
-          //   onPressed: () {
-          //     _searchController.clear();
-          //   },
-          // ),
+          const SizedBox(width: 10.0),
+          Container(
+            decoration: BoxDecoration(color: Colors.black, borderRadius: BorderRadius.circular(12)),
+            child: IconButton(
+              icon: const Icon(Icons.search_rounded, color: Colors.white,),
+              onPressed: () {
+                _searchController.clear();
+              },
+            ),
+          ),
         ],
       ),
     );

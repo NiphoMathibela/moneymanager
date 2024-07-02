@@ -81,7 +81,7 @@ class _HistoryPageState extends State<HistoryPage> {
                       
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
-                  color: Color.fromRGBO(235, 178, 255, 1),
+                  color: const Color.fromRGBO(235, 178, 255, 1),
                 ),
                       
                 //Container content
