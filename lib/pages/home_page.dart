@@ -164,36 +164,39 @@ class _HomePageState extends State<HomePage> {
           if (snapshot.hasData) {
             List debtorList = snapshot.data!.docs;
 
-            return ListView.builder(
-                itemCount: debtorList.length,
-                itemBuilder: (context, index) {
-                  //get each doc
-                  DocumentSnapshot document = debtorList[index];
-                  String docId = document.id;
-
-                  //get data from each doc
-                  Map<String, dynamic> data =
-                      document.data() as Map<String, dynamic>;
-
-                  String nameText = data['name'];
-                  String amountText = data['amount'];
-                  String interestAmountText = data['interestAmount'];
-                  bool paidValue = data['paid'];
-                  String contact = data['contact'];
-
-                  return DebtorTile(
-                    name: nameText,
-                    amount: amountText,
-                    interestAmount: interestAmountText,
-                    paid: paidValue,
-                    docId: docId,
-                    contact: contact,
-                    deleteFunction: (context) =>
-                        fireStoreService.deleteDebt(docId),
-                    editFunction: (context) => createNewDebtor(docId: docId),
-                    viewDebtFunction: (context) => viewDebt(),
-                  );
-                });
+            return Padding(
+              padding: const EdgeInsets.only(left: 20, right: 20),
+              child: ListView.builder(
+                  itemCount: debtorList.length,
+                  itemBuilder: (context, index) {
+                    //get each doc
+                    DocumentSnapshot document = debtorList[index];
+                    String docId = document.id;
+              
+                    //get data from each doc
+                    Map<String, dynamic> data =
+                        document.data() as Map<String, dynamic>;
+              
+                    String nameText = data['name'];
+                    String amountText = data['amount'];
+                    String interestAmountText = data['interestAmount'];
+                    bool paidValue = data['paid'];
+                    String contact = data['contact'];
+              
+                    return DebtorTile(
+                      name: nameText,
+                      amount: amountText,
+                      interestAmount: interestAmountText,
+                      paid: paidValue,
+                      docId: docId,
+                      contact: contact,
+                      deleteFunction: (context) =>
+                          fireStoreService.deleteDebt(docId),
+                      editFunction: (context) => createNewDebtor(docId: docId),
+                      viewDebtFunction: (context) => viewDebt(),
+                    );
+                  }),
+            );
           } else {
             return const Text("No data available yet...");
           }

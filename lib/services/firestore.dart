@@ -112,21 +112,23 @@ class FireStoreService {
   }
 
   //READ: get debtors
-  Stream<QuerySnapshot> getDebtorsStreamHistory() {
-    final debtorStream =
-        debtHistory.orderBy('date', descending: true).snapshots();
+  Stream<QuerySnapshot> getDebtorsStreamHistory(String? userId) {
+    final debtorStream = debtHistory
+        .where('userId', isEqualTo: userId)
+        .orderBy('date', descending: true)
+        .snapshots();
 
     return debtorStream;
   }
 
   //Get Sum of amounts
-  Future<double> calculateSum() async {
+  Future<double> calculateSum(String? userId) async {
     final db = FirebaseFirestore.instance;
     final collectionRef = db.collection('debtHistory');
 
     double sum = 0.0;
 
-    await collectionRef.get().then((querySnapshot) {
+    await collectionRef.where('userId', isEqualTo: userId).get().then((querySnapshot) {
       querySnapshot.docs.forEach((doc) {
         sum += double.parse(doc['interestAmount'].trim());
       });

@@ -28,14 +28,24 @@ class _HistoryPageState extends State<HistoryPage> {
   //Search List
   List<DocumentSnapshot> searchResults = [];
 
+  //Standard List
+  List<DocumentSnapshot> documents = [];
+
   @override
   void initState() {
     super.initState();
     _calculateSum();
   }
 
+    //Get currently logged in user with UserID
+  String? getUid() {
+    final user = FirebaseAuth.instance.currentUser;
+    return user?.uid;
+  }
+
+//Calculate Sums
   Future<void> _calculateSum() async {
-    final sum = await fireStoreService.calculateSum();
+    final sum = await fireStoreService.calculateSum(getUid());
     final paid = await fireStoreService.calculatePaid();
 
     setState(() {
@@ -47,19 +57,19 @@ class _HistoryPageState extends State<HistoryPage> {
   //Search DB
   Future<void> searchDatabase() async {
     print("TAPPED! Searching...");
-    final query = searchController.text;
+    final query = searchController.text.toLowerCase();
     print(searchController.text);
-    final debtorStream = fireStoreService.getDebtorsStream(getUid());
+    final debtorStream = fireStoreService.getDebtorsStreamHistory(getUid());
     final querySnapshot = await debtorStream.first;
 
     searchResults = querySnapshot.docs.where((doc) {
       final name = doc['name'];
-      return name.contains(query);
+      final lowName = name.toLowerCase();
+      return lowName.contains(query);
     }).toList();
 
     setState(() {
       searchResults = searchResults;
-      print("List set");
     });
   }
 
@@ -77,12 +87,6 @@ class _HistoryPageState extends State<HistoryPage> {
       context,
       MaterialPageRoute(builder: (context) => _pages[index]),
     );
-  }
-
-  //Get currently logged in user with UserID
-  String? getUid() {
-    final user = FirebaseAuth.instance.currentUser;
-    return user?.uid;
   }
 
   @override
