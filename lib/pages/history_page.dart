@@ -103,124 +103,126 @@ class _HistoryPageState extends State<HistoryPage> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(20),
-        child: Column(
-          children: [
-            Row(
-                mainAxisAlignment: MainAxisAlignment
-                    .spaceEvenly, // space the containers evenly
-
-                children: [
-                  Expanded(
-                    child: Container(
-                      height: 140, // adjust the height as needed
-
-                      // width: 160, // adjust the width as needed
-
-                      // background color of the container
-
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: const Color.fromRGBO(235, 178, 255, 1),
-                      ),
-
-                      //Container content
-                      child: Padding(
-                        padding: EdgeInsets.all(18),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Icon(Icons.work),
-                            const Text(
-                              "Recieved",
-                              style: TextStyle(
-                                  fontFamily: "ClashGrotesk",
-                                  fontSize: 15,
-                                  color: Color.fromRGBO(102, 102, 102, 1),
-                                  fontWeight: FontWeight.w600),
-                            ),
-                            Text(
-                              "R $_recievedFuture",
-                              style: const TextStyle(
-                                  fontFamily: "ClashGrotesk",
-                                  fontSize: 17,
-                                  fontWeight: FontWeight.w600),
-                            )
-                          ],
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Row(
+                  mainAxisAlignment: MainAxisAlignment
+                      .spaceEvenly, // space the containers evenly
+          
+                  children: [
+                    Expanded(
+                      child: Container(
+                        height: 140, // adjust the height as needed
+          
+                        // width: 160, // adjust the width as needed
+          
+                        // background color of the container
+          
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: const Color.fromRGBO(235, 178, 255, 1),
+                        ),
+          
+                        //Container content
+                        child: Padding(
+                          padding: EdgeInsets.all(18),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Icon(Icons.work),
+                              const Text(
+                                "Recieved",
+                                style: TextStyle(
+                                    fontFamily: "ClashGrotesk",
+                                    fontSize: 15,
+                                    color: Color.fromRGBO(102, 102, 102, 1),
+                                    fontWeight: FontWeight.w600),
+                              ),
+                              Text(
+                                "R $_recievedFuture",
+                                style: const TextStyle(
+                                    fontFamily: "ClashGrotesk",
+                                    fontSize: 17,
+                                    fontWeight: FontWeight.w600),
+                              )
+                            ],
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  Expanded(
-                    child: Container(
-                      height: 140, // adjust the height as needed
-
-                      // width: 160, // adjust the width as needed
-
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: const Color.fromRGBO(167, 254, 217, 1),
-                      ),
-
-                      //Container content
-                      child: Padding(
-                        padding: EdgeInsets.all(18),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Icon(Icons.payment_rounded),
-                            const Text(
-                              "Owed",
-                              style: TextStyle(
-                                  fontFamily: "ClashGrotesk",
-                                  fontSize: 15,
-                                  color: Color.fromRGBO(102, 102, 102, 1),
-                                  fontWeight: FontWeight.w600),
-                            ),
-                            Text(
-                              "R $_owedFuture",
-                              style: const TextStyle(
-                                  fontFamily: "ClashGrotesk",
-                                  fontSize: 17,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                          ],
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    Expanded(
+                      child: Container(
+                        height: 140, // adjust the height as needed
+          
+                        // width: 160, // adjust the width as needed
+          
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: const Color.fromRGBO(167, 254, 217, 1),
+                        ),
+          
+                        //Container content
+                        child: Padding(
+                          padding: EdgeInsets.all(18),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Icon(Icons.payment_rounded),
+                              const Text(
+                                "Owed",
+                                style: TextStyle(
+                                    fontFamily: "ClashGrotesk",
+                                    fontSize: 15,
+                                    color: Color.fromRGBO(102, 102, 102, 1),
+                                    fontWeight: FontWeight.w600),
+                              ),
+                              Text(
+                                "R $_owedFuture",
+                                style: const TextStyle(
+                                    fontFamily: "ClashGrotesk",
+                                    fontSize: 17,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ]),
-            Padding(
-              padding: const EdgeInsets.only(top: 15.0, bottom: 10.0),
-              child: SearchBarDebt(
-                searchDb: searchDatabase,
-                searchController: searchController,
+                  ]),
+              Padding(
+                padding: const EdgeInsets.only(top: 15.0, bottom: 10.0),
+                child: SearchBarDebt(
+                  searchDb: searchDatabase,
+                  searchController: searchController,
+                ),
               ),
-            ),
-            //Display search results
-            SizedBox(
-              height: 300,
-              child: ListView.builder(
-                physics: const AlwaysScrollableScrollPhysics(),
-                itemCount: searchResults.length,
-                itemBuilder: (context, index) {
-                  final document = searchResults[index];
-                  return DebtorTile(
-                      name: document['name'],
-                      amount: document['amount'],
-                      interestAmount: document['interestAmount'],
-                      paid: document['paid'],
-                      deleteFunction: (context) => {},
-                      editFunction: (context) => {},
-                      docId: document.id,
-                      contact: document['contact'],
-                      viewDebtFunction: (context) => {});
-                },
-              ),
-            )
-          ],
+              //Display search results
+              SizedBox(
+                height: 300,
+                child: ListView.builder(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  itemCount: searchResults.length,
+                  itemBuilder: (context, index) {
+                    final document = searchResults[index];
+                    return DebtorTile(
+                        name: document['name'],
+                        amount: document['amount'],
+                        interestAmount: document['interestAmount'],
+                        paid: document['paid'],
+                        deleteFunction: (context) => {},
+                        editFunction: (context) => {},
+                        docId: document.id,
+                        contact: document['contact'],
+                        viewDebtFunction: (context) => {});
+                  },
+                ),
+              )
+            ],
+          ),
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
