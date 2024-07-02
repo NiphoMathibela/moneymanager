@@ -14,7 +14,7 @@ class AuthButton extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.all(20),
         decoration: BoxDecoration(color: Colors.black, borderRadius: BorderRadius.circular(12),),
-        child: Center(child: Text(btnText, style: const TextStyle(color: Colors.white, fontFamily: 'ClashGrotesk', fontWeight: FontWeight.w700),)),
+        child: Center(child: Text(btnText, style: const TextStyle(color: Colors.white, fontFamily: 'ClashGrotesk', fontWeight: FontWeight.w600),)),
       ),
     );
   }

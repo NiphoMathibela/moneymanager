@@ -62,18 +62,19 @@ class DebtorTile extends StatelessWidget {
               color: Color.fromRGBO(245, 245, 245, 1),
               borderRadius: BorderRadius.circular(10)),
           child: ListTile(
+            //View Debdt details
             onTap: () {
               showDialog(
                 context: context,
                 builder: (context) {
                   return AlertDialog(
-                    title: Text('Debt Details'),
+                    title: Text('Details'),
                     content: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Text('Name: $name'),
-                        Text('Amount: $amount'),
-                        Text('Paid: ${paid ? 'Yes' : 'No'}', style: TextStyle(fontFamily: "ClashGrotesk"),),
+                        Text('Name: $name', style: TextStyle(fontFamily: "ClashGrotesk", fontSize: 17),),
+                        Text('Original amount: $amount' ,style: TextStyle(fontFamily: "ClashGrotesk", fontSize: 17),),
+                        Text('Paid: ${paid ? 'Yes' : 'No'}', style: TextStyle(fontFamily: "ClashGrotesk", fontSize: 17),),
                         GestureDetector(
                             onTap: () async {
                               final phoneNumber =
@@ -85,7 +86,7 @@ class DebtorTile extends StatelessWidget {
                                 throw 'Could not launch $phoneNumber';
                               }
                             },
-                            child: Text('Number: $contact')),
+                            child: Text('Number: $contact', style: TextStyle(fontFamily: "ClashGrotesk", fontSize: 18, fontWeight: FontWeight.w500, color: const Color.fromRGBO(235, 178, 255, 1)),)),
                       ],
                     ),
                     actions: [

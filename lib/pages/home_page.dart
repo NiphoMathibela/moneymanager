@@ -30,10 +30,8 @@ class _HomePageState extends State<HomePage> {
   //User change stream
   Stream<User?> authStateChanges = FirebaseAuth.instance.authStateChanges();
 
- @override
-
+  @override
   void initState() {
-
     super.initState();
 
     authStateChanges.listen((User? user) {
@@ -41,14 +39,12 @@ class _HomePageState extends State<HomePage> {
         // User is signed in
         _uid = user.uid;
         print('Logged in user UID: $_uid');
-
       } else {
         // User is signed out
         _uid = null;
         print('No user is currently signed in.');
       }
     });
-
   }
 
   //Navigation functions
@@ -85,11 +81,35 @@ class _HomePageState extends State<HomePage> {
     Navigator.of(context).pop();
   }
 
+  //Get data to display in text fields
+  Future<void> _loadDocumentData(String docId) async {
+    print("Printing...");
+    final firestore = FirebaseFirestore.instance;
+    final documentSnapshot =
+        await firestore.collection("debtorList").doc(docId).get();
+
+    final documentData = documentSnapshot.data();
+    final nameText = documentData?['name'];
+    final amountText = documentData?['amount'];
+    final interestAmountText = documentData?['interestAmount'];
+    final contactText = documentData?['contact'];
+
+    setState(() {
+      _controller.text = nameText ?? '';
+      _controller2.text = amountText ?? '';
+      _numberController.text = contactText ?? '';
+      print(documentData);
+    });
+  }
+
   //Create new debtor
   void createNewDebtor({String? docId}) {
     showDialog(
         context: context,
         builder: (context) {
+          if (docId != null) {
+            _loadDocumentData(docId);
+          }
           return AddDebtorDialog(
             controller: _controller,
             controller2: _controller2,
@@ -108,12 +128,11 @@ class _HomePageState extends State<HomePage> {
                 fireStoreService.addDebtorHistory(docId, _controller.text,
                     _controller2.text, _numberController.text, paid, _uid);
               } else {
-                //Updating 
-                
-                fireStoreService.updateDebt(
-                    docId, _controller.text, _controller2.text, _numberController.text, paid);
-                fireStoreService.updateDebtHistory(
-                    docId, _controller.text, _controller2.text, _numberController.text, paid);
+                //Updating
+                fireStoreService.updateDebt(docId, _controller.text,
+                    _controller2.text, _numberController.text, paid);
+                fireStoreService.updateDebtHistory(docId, _controller.text,
+                    _controller2.text, _numberController.text, paid);
               }
               _controller.clear();
               _controller2.clear();
@@ -140,11 +159,11 @@ class _HomePageState extends State<HomePage> {
         });
   }
 
-//Get currently logged in user with UserID 
+//Get currently logged in user with UserID
   String? getUid() {
-  final user = FirebaseAuth.instance.currentUser;
-  return user?.uid;
-}
+    final user = FirebaseAuth.instance.currentUser;
+    return user?.uid;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -174,17 +193,17 @@ class _HomePageState extends State<HomePage> {
                     //get each doc
                     DocumentSnapshot document = debtorList[index];
                     String docId = document.id;
-              
+
                     //get data from each doc
                     Map<String, dynamic> data =
                         document.data() as Map<String, dynamic>;
-              
+
                     String nameText = data['name'];
                     String amountText = data['amount'];
                     String interestAmountText = data['interestAmount'];
                     bool paidValue = data['paid'];
                     String contact = data['contact'];
-              
+
                     return DebtorTile(
                       name: nameText,
                       amount: amountText,
@@ -208,11 +227,11 @@ class _HomePageState extends State<HomePage> {
         onPressed: () => createNewDebtor(),
         backgroundColor: const Color.fromRGBO(235, 178, 255, 1),
         elevation: 8,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         child: const Icon(Icons.add),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Colors.white,
+          backgroundColor: Colors.white,
           items: const [
             BottomNavigationBarItem(
               icon: Icon(Icons.home_rounded),
