@@ -43,7 +43,7 @@ class FireStoreService {
 
   //CREATE: update
   Future<void> updateDebt(
-      String docId, String newName, String newAmount, bool paid) {
+      String docId, String newName, String newNum, String newAmount, bool paid) {
     //Adding interest
     int num = int.parse(newAmount);
     double interestNum = num * (1 + 0.3);
@@ -53,6 +53,7 @@ class FireStoreService {
     return debtorList.doc(docId).update({
       'name': newName,
       'amount': newAmount,
+      'contact': newNum,
       'interestAmount': finalAmount,
       'paid': paid,
       'date': DateTime.now(),
@@ -67,6 +68,34 @@ class FireStoreService {
   //DELETE delete debtors
   Future<void> deleteDebt(String docId) {
     return debtorList.doc(docId).delete();
+  }
+
+  //GET: Single docunent
+  Future<DocumentSnapshot> getDocument(String? docId) async {
+    // Initialize Firestore
+    final firestore = FirebaseFirestore.instance;
+
+    // Document ID
+    final documentId = docId;
+
+    // Get the document
+    final documentSnapshot = await firestore
+        .collection('debtorList')
+        .doc(documentId)
+        .get();
+
+    // Check if the document exists
+    if (documentSnapshot.exists) {
+      // Get the document data
+      final documentData = documentSnapshot.data();
+
+      // Print the document data
+      print(documentData);
+    } else {
+      print('Document does not exist');
+    }
+
+    return documentSnapshot;
   }
 
   //ADDING TO THE HISTORY COLLECTION
@@ -128,7 +157,10 @@ class FireStoreService {
 
     double sum = 0.0;
 
-    await collectionRef.where('userId', isEqualTo: userId).get().then((querySnapshot) {
+    await collectionRef
+        .where('userId', isEqualTo: userId)
+        .get()
+        .then((querySnapshot) {
       querySnapshot.docs.forEach((doc) {
         sum += double.parse(doc['interestAmount'].trim());
       });
@@ -161,7 +193,7 @@ class FireStoreService {
 
   //CREATE: update
   Future<void> updateDebtHistory(
-      String docId, String newName, String newAmount, bool paid) {
+      String docId, String newName, String newAmount, String newNum, bool paid) {
     //Adding interest
     int num = int.parse(newAmount);
     double interestNum = num * (1 + 0.3);
@@ -171,6 +203,7 @@ class FireStoreService {
     return debtHistory.doc(docId).update({
       'name': newName,
       'amount': newAmount,
+      'contact': newNum,
       'interestAmount': finalAmount,
       'paid': paid,
       'date': DateTime.now(),

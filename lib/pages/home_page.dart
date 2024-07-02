@@ -108,10 +108,12 @@ class _HomePageState extends State<HomePage> {
                 fireStoreService.addDebtorHistory(docId, _controller.text,
                     _controller2.text, _numberController.text, paid, _uid);
               } else {
+                //Updating 
+                
                 fireStoreService.updateDebt(
-                    docId, _controller.text, _controller2.text, paid);
+                    docId, _controller.text, _controller2.text, _numberController.text, paid);
                 fireStoreService.updateDebtHistory(
-                    docId, _controller.text, _controller2.text, paid);
+                    docId, _controller.text, _controller2.text, _numberController.text, paid);
               }
               _controller.clear();
               _controller2.clear();
@@ -210,6 +212,7 @@ class _HomePageState extends State<HomePage> {
         child: const Icon(Icons.add),
       ),
       bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Colors.white,
           items: const [
             BottomNavigationBarItem(
               icon: Icon(Icons.home_rounded),

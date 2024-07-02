@@ -94,6 +94,7 @@ class _HistoryPageState extends State<HistoryPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: Colors.white60,
         title: const Text(
           "History",
           style: TextStyle(
@@ -173,7 +174,7 @@ class _HistoryPageState extends State<HistoryPage> {
                             children: [
                               Icon(Icons.payment_rounded),
                               const Text(
-                                "Owed",
+                                "Loaned",
                                 style: TextStyle(
                                     fontFamily: "ClashGrotesk",
                                     fontSize: 15,
@@ -226,6 +227,7 @@ class _HistoryPageState extends State<HistoryPage> {
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Colors.white,
           items: const [
             BottomNavigationBarItem(
               icon: Icon(Icons.home_rounded),

@@ -129,6 +129,7 @@ class _AccountPageState extends State<AccountPage> {
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Colors.white,
           items: const [
             BottomNavigationBarItem(
               icon: Icon(Icons.home_rounded),

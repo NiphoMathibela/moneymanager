@@ -73,7 +73,7 @@ class DebtorTile extends StatelessWidget {
                       children: [
                         Text('Name: $name'),
                         Text('Amount: $amount'),
-                        Text('Paid: ${paid ? 'Yes' : 'No'}'),
+                        Text('Paid: ${paid ? 'Yes' : 'No'}', style: TextStyle(fontFamily: "ClashGrotesk"),),
                         GestureDetector(
                             onTap: () async {
                               final phoneNumber =
