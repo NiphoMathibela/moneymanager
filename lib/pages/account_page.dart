@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:moneymanager/pages/auth_page.dart';
 import 'package:moneymanager/pages/history_page.dart';
 import 'package:moneymanager/pages/home_page.dart';
@@ -34,13 +35,33 @@ class _AccountPageState extends State<AccountPage> {
     );
   }
 
+  String? email = "";
+
+  //Get currently logged in user with UserID
+  void getUserEamil() {
+    final user = FirebaseAuth.instance.currentUser;
+    email = user?.email;
+  }
+
   //Sign Out function
   void signOut() {
     _auth.signOut();
     // Navigate to the login page
-  Navigator.pushReplacement(
-    context,
-    MaterialPageRoute(builder: (context) => const AuthPage()));
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => const AuthPage()));
+  }
+
+  //Send password reset email
+  void passwordResetEmail() async {
+      try {
+    await FirebaseAuth.instance.sendPasswordResetEmail(email: email ?? '');
+  } on PlatformException catch (e) {
+    print('Error: ${e.code} - ${e.message}');
+  } on FirebaseException catch (e) {
+    print('Error: ${e.code} - ${e.message}');
+  } catch (e) {
+    print('Error: $e');
+  }
   }
 
   @override
@@ -65,7 +86,7 @@ class _AccountPageState extends State<AccountPage> {
               decoration: BoxDecoration(
                   color: const Color.fromRGBO(245, 245, 245, 1),
                   borderRadius: BorderRadius.circular(10)),
-                    
+
               //Email List tile
               child: const ListTile(
                 leading: Icon(Icons.email),
@@ -76,24 +97,32 @@ class _AccountPageState extends State<AccountPage> {
                 ),
               ),
             ),
-            const SizedBox(height: 8,),
+            const SizedBox(
+              height: 8,
+            ),
             Container(
               padding: const EdgeInsets.only(top: 4, bottom: 4),
               decoration: BoxDecoration(
                   color: const Color.fromRGBO(245, 245, 245, 1),
                   borderRadius: BorderRadius.circular(10)),
-                    
+
               //Account List tile
-              child: const ListTile(
-                leading: Icon(Icons.key),
-                title: Text(
-                  "Change password",
-                  style: TextStyle(
-                      fontFamily: "ClashGrotesk", fontWeight: FontWeight.w400),
+              child: GestureDetector(
+                onTap: passwordResetEmail,
+                child: const ListTile(
+                  leading: Icon(Icons.key),
+                  title: Text(
+                    "Change password",
+                    style: TextStyle(
+                        fontFamily: "ClashGrotesk",
+                        fontWeight: FontWeight.w400),
+                  ),
                 ),
               ),
             ),
-            const SizedBox(height: 12,),
+            const SizedBox(
+              height: 12,
+            ),
             //Sign out
             AuthButton(btnText: "Sign Out", onTap: signOut)
           ],

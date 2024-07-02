@@ -117,9 +117,15 @@ class _RegisterState extends State<Register> {
                   },
                 ),
                 //Sign in if already a user
-                GestureDetector(
-                    onTap: widget.onReg,
-                    child: const Text("Already an account? Sign in")),
+                const SizedBox(height: 100,),
+                Row(
+                  children: [
+                    const Text("Already have an account? ", style: TextStyle(fontFamily: "ClashGrotesk", fontSize: 18,)),
+                    GestureDetector(
+                        onTap: widget.onReg,
+                        child: const Text("Sign In", style: TextStyle(fontFamily: "ClashGrotesk", fontSize: 18, fontWeight: FontWeight.w600,  color: Color.fromRGBO(235, 178, 255, 1)),)),
+                  ],
+                ),
               ],
             ),
           ),

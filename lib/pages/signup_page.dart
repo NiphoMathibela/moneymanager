@@ -98,9 +98,15 @@ class _SignUpState extends State<SignUp> {
                     signIn();
                   },
                 ),
-                GestureDetector(
-                    onTap: widget.onReg,
-                    child: const Text("Don't have an account? Register")),
+                const SizedBox(height: 150,),
+                Row(
+                  children: [
+                    Text("Don't have an account? ", style: TextStyle(fontFamily: "ClashGrotesk", fontSize: 18,)),
+                    GestureDetector(
+                        onTap: widget.onReg,
+                        child: const Text("Register", style: TextStyle(fontFamily: "ClashGrotesk", fontSize: 18, fontWeight: FontWeight.w600,  color: Color.fromRGBO(235, 178, 255, 1)),)),
+                  ],
+                ),
               ],
             ),
           ),
