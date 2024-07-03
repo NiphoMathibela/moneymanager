@@ -43,7 +43,7 @@ class TogglePaid extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text(isPaid ? "Paid" : "Unpaid", style: TextStyle(fontFamily: "ClashGrotesk"),),
+                Text(isPaid ? "Paid" : "Not", style: TextStyle(fontFamily: "ClashGrotesk"),),
                 const Icon(Icons.arrow_drop_down)
               ]),
         ),

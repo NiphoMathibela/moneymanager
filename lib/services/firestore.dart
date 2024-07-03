@@ -172,13 +172,13 @@ class FireStoreService {
   }
 
   //Get Sum of amounts if paid
-  Future<double> calculatePaid() async {
+  Future<double> calculatePaid(String? userId) async {
     final db = FirebaseFirestore.instance;
     final collectionRef = db.collection('debtHistory');
 
     double sum = 0.0;
 
-    await collectionRef.get().then((querySnapshot) {
+    await collectionRef.where('userId', isEqualTo: userId).get().then((querySnapshot) {
       querySnapshot.docs.forEach((doc) {
         if (doc['paid']) {
           sum += double.parse(doc['interestAmount'].trim());

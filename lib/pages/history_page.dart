@@ -46,7 +46,7 @@ class _HistoryPageState extends State<HistoryPage> {
 //Calculate Sums
   Future<void> _calculateSum() async {
     final sum = await fireStoreService.calculateSum(getUid());
-    final paid = await fireStoreService.calculatePaid();
+    final paid = await fireStoreService.calculatePaid(getUid());
 
     setState(() {
       _owedFuture = sum;
